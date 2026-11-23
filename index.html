@@ -413,6 +413,10 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
   .margin-note { display: none; }
   .folder::after { width: 90px; height: 90px; bottom: 20px; }
 }
+
+.cbtn.cap-pick[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.cap-shots { display: grid; gap: 22px; }
+.cap-shots .shot img { background: #fff; }
 </style>
 
 <div class="wrap">
@@ -428,12 +432,13 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
     <a href="#overview" data-tab="overview"><b>01</b>Overview</a>
     <a href="#models" data-tab="models"><b>02</b>Models</a>
     <a href="#builds" data-tab="builds"><b>03</b>Builds</a>
-    <a href="#career" data-tab="career"><b>04</b>Career</a>
-    <a href="#skills" data-tab="skills"><b>05</b>Skills</a>
-    <a href="#work" data-tab="work"><b>06</b>Work</a>
-    <a href="#cleanup" data-tab="cleanup"><b>07</b>Cleanup</a>
-    <a href="#senate" data-tab="senate"><b>08</b>Senate</a>
-    <a href="#contact" data-tab="contact"><b>09</b>Contact</a>
+    <a href="#capstone" data-tab="capstone"><b>04</b>Capstone</a>
+    <a href="#career" data-tab="career"><b>05</b>Career</a>
+    <a href="#skills" data-tab="skills"><b>06</b>Skills</a>
+    <a href="#work" data-tab="work"><b>07</b>Work</a>
+    <a href="#cleanup" data-tab="cleanup"><b>08</b>Cleanup</a>
+    <a href="#senate" data-tab="senate"><b>09</b>Senate</a>
+    <a href="#contact" data-tab="contact"><b>10</b>Contact</a>
   </nav>
 
   <main class="folder">
@@ -476,12 +481,13 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
     <!-- 02 models -->
     <section class="file" id="file-models" data-file="models" aria-labelledby="h7t" hidden>
       <div class="fileline"><span>File no. <b>CA-26-02</b></span><span>CAD exhibits</span><span>Subject: <b>C. Accad</b></span><span>Distribution: public</span></div>
-      <span class="ink">Cleared for release<small>2 assemblies</small></span>
+      <span class="ink">Cleared for release<small>3 assemblies</small></span>
       <div>
         <p class="label"><b>File 02</b> · exhibit · CAD assembly</p>
         <div class="cad-controls" role="group" aria-label="Choose a model" style="margin: 0 0 16px">
           <button class="cbtn cad-pick" data-m="0" type="button" aria-pressed="true">Go kart</button>
           <button class="cbtn cad-pick" data-m="1" type="button" aria-pressed="false">Mill engine</button>
+          <button class="cbtn cad-pick" data-m="2" type="button" aria-pressed="false">Tire gripper</button>
         </div>
         <div class="mdl" data-m="0"><h2 class="big" id="h7t">An F1-style go kart, drawn by 3D ellipses</h2>
         <div class="tags"><span class="tag live">Interactive 3D</span><span class="tag">Frame designed by me</span><span class="tag">STEP AP214</span></div>
@@ -491,6 +497,10 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
         <div class="tags"><span class="tag live">Interactive 3D</span><span class="tag">Exported 2020</span><span class="tag">STEP AP214</span></div>
         <p class="plain">Small reciprocating mill engine designed in Autodesk. A single cylinder with a separate valve cylinder and port block. A trunk guide in three sub-sections keeps the piston rod running straight. The linkage and drive train are a con rod, eccentric strap, flywheel and drive pulley, on a base frame with a bearing and a top block.</p>
         <p class="plain">Press <b>Run the engine</b>: the crank turns the flywheel and pulley, the con rod drives the piston and crosshead, and the eccentric strap works the piston valve. Steam leaves the valve exhaust as Fourier puffs.</p>
+        </div><div class="mdl" data-m="2" hidden><h2 class="big" id="h7t3">The capstone tire gripper, drawn by 3D ellipses</h2>
+        <div class="tags"><span class="tag live">Interactive 3D</span><span class="tag">Designed by me</span><span class="tag">SolidWorks · STEP AP214</span></div>
+        <p class="plain">The three-prong rotary cam-follower gripper from my capstone tire handler (<a href="#capstone">File 04</a>). The orange cam plate turns on the actuator shaft; a bronze bushing on each prong carriage rides in one of its three curved slots, so turning the plate drives all three carriages along their linear rails at once.</p>
+        <p class="plain">Press <b>Work the gripper</b>: the plate turns about 63°, and the slot geometry pulls each prong in by 189 mm, then lets it back out. The stroke here is measured from the plate itself, not keyframed by hand.</p>
         </div>
         <div class="mdl" data-m="0"><h3 class="sec">Measurements</h3>
         <div class="metrics">
@@ -508,6 +518,15 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
           <div><b>4,837</b><span>faces in the source model</span></div>
           <div><b>22,934</b><span>edges in the source model</span></div>
           <div><b>16 MB</b><span>STEP file, simplified here to about 67,000 triangles</span></div>
+          <div><b>480</b><span>ellipses in the Fourier trace</span></div>
+        </div></div>
+        <div class="mdl" data-m="2" hidden><h3 class="sec">Measurements</h3>
+        <div class="metrics">
+          <div><b>248</b><span>solid bodies, test tires removed</span></div>
+          <div><b>3</b><span>prongs on one cam plate</span></div>
+          <div><b>189 mm</b><span>prong stroke over about 63° of cam rotation</span></div>
+          <div><b>653 mm</b><span>prong length: widest tire plus 8 in</span></div>
+          <div><b>115 MB</b><span>STEP file, simplified here to about 83,000 triangles</span></div>
           <div><b>480</b><span>ellipses in the Fourier trace</span></div>
         </div></div>
         <details class="more"><summary>How it is drawn</summary>
@@ -645,15 +664,78 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
         </div>
         </div>
       </div>
-      <nav class="filenav" aria-label="File navigation"><a href="#models">← Models</a><a href="#career">Next file: Career →</a></nav>
+      <nav class="filenav" aria-label="File navigation"><a href="#models">← Models</a><a href="#capstone">Next file: Capstone →</a></nav>
+    </section>
+
+    <!-- capstone -->
+    <section class="file" id="file-capstone" data-file="capstone" aria-labelledby="t-capstone" hidden>
+      <div class="fileline"><span>File no. <b>CA-26-04</b></span><span>Case file</span><span>Subject: <b>C. Accad</b></span><span>Distribution: public</span></div>
+      <span class="ink">Delivered<small>April 2026</small></span>
+      <div>
+        <p class="label"><b>File 04</b> · case file · uOttawa capstone, April 2026</p>
+        <h2 class="big" id="t-capstone">An operator-assist tire handler for a tire test lab.</h2>
+        <div class="tags"><span class="tag live">Industry sponsored</span><span class="tag">Team of five</span><span class="tag">I designed the gripper</span><span class="tag">SolidWorks · MATLAB</span></div>
+        <p class="lede">MTS loads test tires onto its Flat-Trac® machines by hand, which is slow and hard on the people doing it. Our team designed a floor-mounted handler that picks a tire up off the floor, turns it to face the machine and holds it on the hub while the operator bolts it on.</p>
+        <h3 class="sec">Requirements</h3>
+        <div class="metrics">
+          <div><b>91 kg</b><span>heaviest tire it must lift</span></div>
+          <div><b>450 to 950 mm</b><span>tire diameters, 100 to 450 mm wide</span></div>
+          <div><b>&lt; 2 min</b><span>target time to load a tire</span></div>
+          <div><b>2</b><span>design factor on every structural member</span></div>
+          <div><b>IP67</b><span>sealed against dust and water, floor-mounted only</span></div>
+          <div><b>8 in</b><span>clearance kept behind the tire for hub bolts</span></div>
+        </div>
+        <p class="plain" style="margin-top: 14px">No hydraulics allowed, nothing may enter the test machine's motion envelope, and it has to stay cheap.</p>
+
+        <h3 class="sec">How it moves</h3>
+        <ol class="steps">
+          <li><b>Swing:</b> the base column sits on a turntable bearing, so the whole arm rotates left and right.</li>
+          <li><b>Lift:</b> a pneumatic cylinder drives two parallel diagonal arms, keeping the head level as it rises.</li>
+          <li><b>Reach:</b> the first arm pivots on the U-bracket for sideways adjustment.</li>
+          <li><b>Tilt:</b> a second cylinder turns the gripper from facing the floor to facing the machine.</li>
+          <li><b>Clock:</b> nylon sleeves on the prongs let the operator spin the tire to line up the bolt holes.</li>
+        </ol>
+
+        <h3 class="sec">The gripper (my part)</h3>
+        <p class="plain">A three-prong rotary cam-follower. A Parker RA20 rotary actuator turns an orange cam plate; three curved slots in the plate push the prong carriages along linear rails, so one rotation opens or closes all three prongs together around the tire bead. The rails mount to the Spyder Mount, a custom sheet-metal bracket with three arms, which also carries the tilt mount. Bushings at the cam followers are bolted on, so wear means swapping a bushing, not the cam plate.</p>
+        <div class="cad-controls" role="group" aria-label="Gripper position" style="margin-top: 12px">
+          <button class="cbtn cap-pick" data-g="open" type="button" aria-pressed="true">Gripper open</button>
+          <button class="cbtn cap-pick" data-g="closed" type="button" aria-pressed="false">Gripper closed</button>
+        </div>
+        <p class="plain" style="margin-top: 10px"><a href="#models" data-model="2">Open the gripper in 3D</a> and press <b>Work the gripper</b> to watch the cam drive the prongs.</p>
+
+        <details class="more"><summary>Read the full case file: optimization, controls, a design-review lesson</summary>
+          <h3 class="sec">Optimization</h3>
+          <p class="plain">A MATLAB GUI takes the tire's mass, width and diameter, sizes the gripper first, then passes those loads down the frame member by member: arms, columns, U-bracket. Shear, bending and buckling checks hold a design factor of 2 throughout.</p>
+          <div class="metrics">
+            <div><b>8 to 11.5 mm</b><span>base prong bolt diameter</span></div>
+            <div><b>50.8 to 73.8 mm</b><span>prong shaft diameter</span></div>
+            <div><b>303 to 653 mm</b><span>prong length: tire width plus 8 in</span></div>
+            <div><b>151 to 178.5 mm</b><span>base column outer diameter</span></div>
+          </div>
+          <h3 class="sec">Operator controls</h3>
+          <p class="plain">A sealed box on the arm with three pneumatic valves: two 5/3 valves, so lift and grip can stop mid-stroke, and a 5/2 valve for the tilt, which only needs fully in or fully out. A 3/2 emergency stop sits in series and dumps the air supply, and check valves hold each cylinder if a line breaks.</p>
+          <h3 class="sec">A design-review lesson</h3>
+          <p class="plain">For the ethics study we asked a large language model to improve the cam plate. It suggested thickening the plate, without seeing the loads. The plate actually fails by pin shear and slot bearing stress, which thickness does not fix, and the extra mass would have overloaded the actuator and forced injection moulding instead of water-jet cutting. We rejected the change, documented why, and re-checked every cam stress against the factor of 2.</p>
+        </details>
+      </div>
+      <div class="cap-shots">
+        <figure class="shot"><img alt="Full tire handler: turntable base column, lift cylinder, parallel arms and the orange gripper holding position." src="assets/cap_handler.webp" loading="lazy" decoding="async"><figcaption>The complete handler.</figcaption></figure>
+        <figure class="shot"><img class="cap-g" data-open="assets/cap_grip_open.webp" data-closed="assets/cap_grip_closed.webp" alt="The three-prong gripper with its orange cam plate, prongs opened out." src="assets/cap_grip_open.webp" loading="lazy" decoding="async"><figcaption class="cap-gcap">Gripper open: prongs out at the end of the cam slots.</figcaption></figure>
+        <figure class="shot"><img alt="The gripper holding the largest tire by its bead, hub left clear." src="assets/cap_grip_tire.webp" loading="lazy" decoding="async"><figcaption>Holding the largest tire, hub clear.</figcaption></figure>
+        <figure class="shot"><img alt="The Spyder Mount: a three-armed sheet-metal bracket carrying the linear rails and prongs." src="assets/cap_spyder.webp" loading="lazy" decoding="async"><figcaption>The Spyder Mount carrying the rails.</figcaption></figure>
+        <figure class="shot"><img alt="The handler beside a 6-foot operator model for scale, gripper lowered to the floor." src="assets/cap_operator.webp" loading="lazy" decoding="async"><figcaption>Pick-up position, 6 ft operator for scale.</figcaption></figure>
+        <figure class="shot"><img alt="The handler placed in the MTS test cell beside the Flat-Trac machine." src="assets/cap_lab.webp" loading="lazy" decoding="async"><figcaption>Placed in the test cell.</figcaption></figure>
+      </div>
+      <nav class="filenav" aria-label="File navigation"><a href="#builds">← Builds</a><a href="#career">Next file: Career →</a></nav>
     </section>
 
     <!-- 03 career -->
     <section class="file single" id="file-career" data-file="career" aria-labelledby="t-career" hidden>
-      <div class="fileline"><span>File no. <b>CA-26-04</b></span><span>Record of service</span><span>Subject: <b>C. Accad</b></span><span>Distribution: public</span></div>
+      <div class="fileline"><span>File no. <b>CA-26-05</b></span><span>Record of service</span><span>Subject: <b>C. Accad</b></span><span>Distribution: public</span></div>
       <span class="ink">On record<small>41 months</small></span>
       <div>
-        <p class="label"><b>File 04</b> · record of service · 41 months federal, six placements</p>
+        <p class="label"><b>File 05</b> · record of service · 41 months federal, six placements</p>
         <h2 class="big" id="t-career">From federal co-op to procurement officer.</h2>
         <p class="lede">Most of my degree was spent inside the federal government through co-op. That taught me how large equipment programs are bought, funded and reported on, and where the data gets stuck. I build the tool when the spreadsheet stops being enough.</p>
         <div class="record">
@@ -684,15 +766,15 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
             <li>Industry-sponsored capstone: an ergonomic tire-handling system, analysed to a safety factor of 2 or greater, delivered as a working prototype.</li></ul></div></div>
         </div>
       </div>
-      <nav class="filenav" aria-label="File navigation"><a href="#builds">← Builds</a><a href="#skills">Next file: Skills →</a></nav>
+      <nav class="filenav" aria-label="File navigation"><a href="#capstone">← Capstone</a><a href="#skills">Next file: Skills →</a></nav>
     </section>
 
     <!-- 04 skills -->
     <section class="file" id="file-skills" data-file="skills" aria-labelledby="t-skills" hidden>
-      <div class="fileline"><span>File no. <b>CA-26-05</b></span><span>Capabilities</span><span>Subject: <b>C. Accad</b></span><span>Distribution: public</span></div>
+      <div class="fileline"><span>File no. <b>CA-26-06</b></span><span>Capabilities</span><span>Subject: <b>C. Accad</b></span><span>Distribution: public</span></div>
       <span class="ink blue">On record</span>
       <div>
-        <p class="label"><b>File 05</b> · capabilities</p>
+        <p class="label"><b>File 06</b> · capabilities</p>
         <h2 class="big" id="t-skills">Engineering, procurement and the software in between.</h2>
         <dl class="kinds" style="margin-top: 22px">
           <div><dt>Engineering</dt><dd><span class="chip">SolidWorks and Simulation FEA</span><span class="chip">Thermal and flow simulation</span><span class="chip">GD&amp;T and detailed drawings</span><span class="chip">CATIA</span><span class="chip">Creo</span><span class="chip">AutoCAD</span><span class="chip">MATLAB</span><span class="chip">Vibration analysis</span></dd></div>
@@ -712,10 +794,10 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
 
     <!-- 05 work -->
     <section class="file" id="file-work" data-file="work" aria-labelledby="t-work" hidden>
-      <div class="fileline"><span>File no. <b>CA-26-06</b></span><span>Index of work</span><span>Subject: <b>C. Accad</b></span><span>Distribution: public</span></div>
+      <div class="fileline"><span>File no. <b>CA-26-07</b></span><span>Index of work</span><span>Subject: <b>C. Accad</b></span><span>Distribution: public</span></div>
       <span class="ink blue">Index<small>14 entries</small></span>
       <div>
-        <p class="label"><b>File 06</b> · index of work · <span id="work-count"></span></p>
+        <p class="label"><b>File 07</b> · index of work · <span id="work-count"></span></p>
         <h2 class="big" id="t-work">Every project, one index.</h2>
         <p class="plain" style="margin: 12px 0 18px">Select an entry to read its summary. Entries with a full case file link to it.</p>
         <ul class="plist" id="plist">
@@ -725,7 +807,7 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
         <li><button class="pbtn" type="button" data-title="File Cleanup" data-case="s6" data-kind="Tool" data-status="Open source" data-desc="Review a messy folder visually with your team, agree on a cleaner structure, and copy it into a new folder. The original is never moved, renamed or deleted. Python standard library only." aria-pressed="false">File Cleanup Tool<span class="kindtag">tool</span></button></li>
         <li><button class="pbtn" type="button" data-title="CDPEAD" data-kind="Analytics" data-status="Independent" data-desc="The Canadian Defence Procurement Engineering Analytics Dashboard. I built it on my own to make procurement and engineering data easy to scan." aria-pressed="false">CDPEAD<span class="kindtag">analytics</span></button></li>
         <li><button class="pbtn" type="button" data-title="EntroCAD" data-kind="Company" data-status="Co-founder" data-desc="An engineering media company I co-founded, focused on explaining engineering to a wider audience." aria-pressed="false">EntroCAD<span class="kindtag">company</span></button></li>
-        <li><button class="pbtn" type="button" data-title="Tire Handler" data-kind="Engineering" data-status="uOttawa capstone" data-desc="Capstone design project for the Biomedical Mechanical Engineering degree." aria-pressed="false">Tire Handler<span class="kindtag">engineering</span></button></li>
+        <li><button class="pbtn" type="button" data-title="Tire Handler" data-case="capstone" data-kind="Engineering" data-status="uOttawa capstone" data-desc="Industry-sponsored capstone: a floor-mounted, pneumatic tire handler for a tire test lab, lifting tires up to 91 kg. I designed its three-prong rotary cam gripper." aria-pressed="false">Tire Handler<span class="kindtag">engineering</span></button></li>
         <li><button class="pbtn" type="button" data-title="Vibration" data-kind="Engineering" data-status="Coursework" data-desc="Mechanical Vibration Analysis: an analysis project from the mechanical vibrations course, covering modelling and response of mechanical systems." aria-pressed="false">Mechanical Vibration Analysis<span class="kindtag">engineering</span></button></li>
         <li><button class="pbtn" type="button" data-title="Thrust Vector" data-case="builds" data-build="tvp" data-kind="Hardware" data-status="In progress" data-desc="A modular thrust vectoring propeller unit, flown by a Matek F405-WMN flight controller running INAV." aria-pressed="false">Modular Thrust Vector Propeller<span class="kindtag">hardware</span></button></li>
         <li><button class="pbtn" type="button" data-title="Pendulum" data-case="builds" data-build="pen" data-kind="Controls" data-status="In progress" data-desc="A physical double inverted pendulum: quadrature encoders read both arm angles, and an ESP32 drives responsive DC and brushless motors. It runs an open-source control model trained in NVIDIA Isaac Lab by NRdrgz; I build the hardware and integration." data-href="https://github.com/NRdrgz/DoublePendulumIsaacLab" data-hreflabel="Model by NRdrgz on GitHub" aria-pressed="false">Double Inverted Pendulum<span class="kindtag">controls</span></button></li>
@@ -747,10 +829,10 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
 
     <!-- 06 cleanup -->
     <section class="file" id="file-cleanup" data-file="cleanup" aria-labelledby="h5t" hidden>
-      <div class="fileline"><span>File no. <b>CA-26-07</b></span><span>Case file</span><span>Subject: <b>C. Accad</b></span><span>Distribution: public</span></div>
+      <div class="fileline"><span>File no. <b>CA-26-08</b></span><span>Case file</span><span>Subject: <b>C. Accad</b></span><span>Distribution: public</span></div>
       <span class="ink">Cleared for release<small>MIT licence</small></span>
       <div>
-        <p class="label"><b>File 07</b> · case file · open source</p>
+        <p class="label"><b>File 08</b> · case file · open source</p>
         
       <h2 class="big" id="h5t">File Cleanup Tool</h2>
       <div class="tags"><span class="tag live">MIT licensed</span><span class="tag">Python 3.9+</span><span class="tag">Standard library only</span><span class="tag">Fully offline</span></div>
@@ -818,10 +900,10 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
 
     <!-- 07 senate -->
     <section class="file" id="file-senate" data-file="senate" aria-labelledby="h6t" hidden>
-      <div class="fileline"><span>File no. <b>CA-26-08</b></span><span>Case file</span><span>Subject: <b>C. Accad</b></span><span>Distribution: public</span></div>
+      <div class="fileline"><span>File no. <b>CA-26-09</b></span><span>Case file</span><span>Subject: <b>C. Accad</b></span><span>Distribution: public</span></div>
       <span class="ink">Cleared for release<small>live board</small></span>
       <div>
-        <p class="label"><b>File 08</b> · case file · simulation</p>
+        <p class="label"><b>File 09</b> · case file · simulation</p>
         
       <h2 class="big" id="h6t">Senate Situation Board</h2>
       <div class="tags"><span class="tag live">Live on GitHub Pages</span><span class="tag">Python</span><span class="tag">React, Vite and three.js</span><span class="tag">5 policy sectors</span></div>
@@ -886,10 +968,10 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
 
     <!-- 08 contact -->
     <section class="file" id="file-contact" data-file="contact" aria-labelledby="t-contact" hidden>
-      <div class="fileline"><span>File no. <b>CA-26-09</b></span><span>Contact</span><span>Subject: <b>C. Accad</b></span><span>Distribution: public</span></div>
+      <div class="fileline"><span>File no. <b>CA-26-10</b></span><span>Contact</span><span>Subject: <b>C. Accad</b></span><span>Distribution: public</span></div>
       <span class="ink blue">Awaiting reply</span>
       <div>
-        <p class="label"><b>File 09</b> · contact</p>
+        <p class="label"><b>File 10</b> · contact</p>
         <h2 class="big" id="t-contact">Let's talk engineering, procurement and analytics.</h2>
         <div class="cta">
           <button class="btn primary copy-email" type="button"><span>christopher@accad.org</span><small class="copy-note">Copy email</small></button>
@@ -909,17 +991,19 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
       <nav class="filenav" aria-label="File navigation"><a href="#senate">← Senate</a><a href="#overview">Back to Overview ↺</a></nav>
     </section>
   </main>
-  <footer class="foot"><span>Christopher Accad · Ottawa · Nov 2026</span><span>Press 1 to 9 to open a file</span></footer>
+  <footer class="foot"><span>Christopher Accad · Ottawa · Nov 2026</span><span>Press 1 to 0 to open a file</span></footer>
 </div>
 
-<script type="application/json" id="cad-meta">{"nV": 87356, "nT": 175347, "idx32": true, "K": 480, "M": 8192, "dc": [0.0004713324150616561, -0.11370163995698675, 0.07591157524807984], "half": [0.5720495195168981, 0.35623631727768995, 1.0], "scale": 1825.0280010030278, "kept": 99.94, "nEdges": 600, "pathLen": 211.96653206073088, "groups": [[71352, 0], [218, 1], [603, 0], [218, 2], [753, 0], [1318, 1], [54, 0], [1318, 2], [1332, 3], [1332, 4], [4092, 0], [218, 3], [218, 4], [28, 0], [70, 5], [4232, 0]], "anim": {"type": "kart", "speed": 9, "wheels": [{"g": 1, "c": [0.48874, -0.162119, 0.744846], "a": [0.999917, 0.010149, -0.007886], "s": 1}, {"g": 2, "c": [-0.48888, -0.162121, 0.745028], "a": [0.999931, -0.01012, 0.006045], "s": 1}, {"g": 3, "c": [0.421676, -0.153496, -0.572076], "a": [0.999818, 0.01909, -0.0], "s": 1}, {"g": 4, "c": [-0.421809, -0.153496, -0.572076], "a": [0.999818, -0.01909, 0.0], "s": 1}, {"g": 5, "c": [0.055144, -0.127223, -0.503339], "a": [1.0, 0.000112, -0.00011], "s": 1}], "ex": {"p": [0.000482, -0.21199, -0.851604], "d": [0.0, 0.33035, -0.943858], "size": 0.05, "every": 0.18}}}</script>
+<script type="application/json" id="cad-meta">{"nV":87356,"nT":175347,"idx32":true,"K":480,"M":8192,"dc":[0.0004713324150616561,-0.11370163995698675,0.07591157524807984],"half":[0.5720495195168981,0.35623631727768995,1.0],"scale":1825.0280010030278,"kept":99.94,"nEdges":600,"pathLen":211.96653206073088,"groups":[[71352,0],[218,1],[603,0],[218,2],[753,0],[1318,1],[54,0],[1318,2],[1332,3],[1332,4],[4092,0],[218,3],[218,4],[28,0],[70,5],[4232,0]],"anim":{"type":"kart","speed":9,"wheels":[{"g":1,"c":[0.48874,-0.162119,0.744846],"a":[0.999917,0.010149,-0.007886],"s":1},{"g":2,"c":[-0.48888,-0.162121,0.745028],"a":[0.999931,-0.01012,0.006045],"s":1},{"g":3,"c":[0.421676,-0.153496,-0.572076],"a":[0.999818,0.01909,-0.0],"s":1},{"g":4,"c":[-0.421809,-0.153496,-0.572076],"a":[0.999818,-0.01909,0.0],"s":1},{"g":5,"c":[0.055144,-0.127223,-0.503339],"a":[1.0,0.000112,-0.00011],"s":1}],"ex":{"p":[0.000482,-0.21199,-0.851604],"d":[0.0,0.33035,-0.943858],"size":0.05,"every":0.18}},"tint":{"colors":["#c1121f","#b8bcc2","#4b5058","#1e1f22","#17181a","#c9ccd1","#8e939a","#d1a12a","#e3b51d","#9b8e80","#2a2c30","#b59a5b"],"runs":[[17681,1],[11075,2],[5206,3],[2198,2],[2977,3],[8795,12],[642,4],[7114,3],[337,2],[1058,7],[2030,11],[2553,7],[4147,3],[4538,4],[699,8],[302,3],[520,7],[301,3],[218,7],[699,8],[54,3],[350,5],[155,6],[15,5],[9,6],[13,5],[21,6],[540,5],[29,6],[186,5],[54,3],[350,5],[155,6],[15,5],[9,6],[13,5],[21,6],[540,5],[29,6],[321,5],[14,6],[58,5],[12,6],[69,5],[274,6],[450,5],[12,6],[54,5],[44,6],[345,5],[14,6],[58,5],[12,6],[69,5],[274,6],[450,5],[12,6],[54,5],[44,6],[210,5],[443,7],[1368,4],[673,7],[14,3],[230,7],[14,3],[266,11],[244,4],[14,7],[230,4],[28,7],[364,9],[204,3],[436,7],[28,9],[70,7],[478,3],[244,4],[14,7],[182,9],[102,3],[14,7],[202,4],[28,7],[182,9],[476,3],[1652,10],[658,1]]}}</script>
 <script type="text/plain" id="cad-bin" data-src="assets/car.b64.txt"></script>
 <script type="application/json" id="cad-meta2">{"nV": 34501, "nT": 66500, "idx32": false, "K": 480, "M": 8192, "dc": [0.15197799999438438, 0.0027477533361250053, -0.016706280052918958], "half": [1.0, 0.4506123146706874, 0.601845214799891], "scale": 162.0017865098722, "kept": 99.85, "nEdges": 500, "pathLen": 234.58345548358767, "groups": [[23839, 0], [5926, 1], [842, 3], [514, 2], [400, 5], [1030, 4], [70, 1], [507, 0], [74, 4], [1299, 0]], "anim": {"type": "mill", "speed": 3.2, "C": [0.586413, 0.080246, 0.243824], "a": [0.0, 0.0, -1.0], "P0": [0.480859, 0.13148, 0.243824], "X0": [-0.115431, 0.079629, 0.243824], "u": [1.0, 0.0, -0.0], "E0": [0.612956, 0.106172, -0.052469], "V0": [0.008642, 0.079629, -0.052469], "u2": [1.0, 0.0, -0.0], "ex": {"p": [-0.635795, 0.079629, -0.225306], "d": [0.0, 0.0, -1.0], "size": 0.05555, "every": 0.55}}}</script>
 <script type="text/plain" id="cad-bin2" data-src="assets/engine.b64.txt"></script>
+<script type="application/json" id="cad-meta3">{"nV":41170,"nT":82608,"idx32":false,"K":480,"M":8192,"dc":[0.2550819256318757,-0.17168581767484548,-0.003028044045521614],"half":[0.854822638487186,1.0,0.987061689286478],"scale":481.7892024623782,"kept":99.98,"nEdges":500,"pathLen":134.74740654001462,"groups":[[1112,0],[1987,1],[1926,0],[4544,1],[468,0],[63,4],[298,0],[93,4],[28,0],[177,4],[28,0],[1038,4],[145,1],[26,0],[554,1],[1378,0],[129,3],[194,0],[28,1],[1158,0],[1959,1],[52,0],[56,1],[52,0],[28,4],[12,1],[14,3],[14,2],[14,3],[14,2],[48,0],[3856,3],[3728,2],[30,3],[30,2],[79,3],[79,2],[14,3],[14,2],[14,3],[14,2],[264,0],[14,3],[14,2],[14,3],[14,2],[14,3],[14,2],[1133,0],[1935,3],[1076,0],[1940,2],[304,3],[304,2],[408,3],[408,2],[12,3],[12,2],[14,3],[14,2],[133,3],[133,2],[1079,0],[1940,3],[1065,0],[1935,2],[12,3],[12,2],[28,0],[554,3],[554,2],[42,1],[94,2],[93,1],[93,2]],"anim":{"type":"grip","speed":1,"C":[0.243273,-0.270383,0.0],"a":[0,1,0],"arms":[{"g":1,"u":[-1.0,0,0.0]},{"g":2,"u":[0.5,0,0.866025]},{"g":3,"u":[0.5,0,-0.866025]}],"th":[0.0,0.05236,0.10472,0.15708,0.20944,0.2618,0.31416,0.36652,0.41888,0.47124,0.5236,0.57596,0.62832,0.68068,0.73304,0.7854,0.83776,0.89012,0.94248,0.99484,1.0472,1.09956],"d":[0.0,0.0,0.008302,0.024907,0.043588,0.066419,0.087175,0.105855,0.126611,0.149443,0.172275,0.197182,0.217938,0.240769,0.261525,0.282281,0.303037,0.323793,0.342473,0.359078,0.373607,0.392288]},"tint":{"color":"#e8731a","runs":[[10874,0],[888,1],[29408,0]]}}</script>
+<script type="text/plain" id="cad-bin3" data-src="assets/gripper.b64.txt"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 (function () {
-  var MODELS = [{ bin: 'cad-bin', meta: 'cad-meta', word: 'New.STEP' }, { bin: 'cad-bin2', meta: 'cad-meta2', word: 'Mill_Engine.STEP' }];
+  var MODELS = [{ bin: 'cad-bin', meta: 'cad-meta', word: 'New.STEP' }, { bin: 'cad-bin2', meta: 'cad-meta2', word: 'Mill_Engine.STEP' }, { bin: 'cad-bin3', meta: 'cad-meta3', word: 'Spyder_design_assem.STEP' }];
   var cv = document.getElementById('cad');
   if (!cv || !document.getElementById('cad-bin')) return;
   var elBin, elMeta, meta, cache = [];
@@ -967,6 +1051,14 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
     var pos = new Float32Array(meta.nV * 3), col = new Float32Array(meta.nV * 3);
     for (i = 0; i < meta.nV * 3; i++) pos[i] = d.q[i] / 32767;
     for (i = 0; i < meta.nV; i++) { var s = d.shade[i] / 255; col[i * 3] = s; col[i * 3 + 1] = s; col[i * 3 + 2] = s; }
+    R.tintIdx = null;
+    if (meta.tint) {
+      /* tint.colors is a palette; each run gives a vertex count and a 1-based palette index (0 = untinted) */
+      var pal = (meta.tint.colors || [meta.tint.color]).map(function (h) { return new T.Color(h); });
+      var ti = [], tc = [], o = 0;
+      meta.tint.runs.forEach(function (r) { if (r[1]) for (var k = o; k < o + r[0]; k++) { ti.push(k); tc.push(r[1] - 1); } o += r[0]; });
+      R.tintIdx = ti; R.tintWhich = tc; R.tintPal = pal;
+    }
     var g = new T.BufferGeometry();
     g.setAttribute('position', new T.BufferAttribute(pos, 3));
     g.setAttribute('color', new T.BufferAttribute(col, 3));
@@ -1054,6 +1146,13 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
     if (!S.ready) return;
     var dark = isDark(), c = accent();
     R.mat.color.set(dark ? 0xb4c8de : 0x6d8499);
+    if (R.tintIdx && R.mesh) {
+      /* the material colour multiplies every vertex, so divide it back out for the tinted chassis */
+      var ca = R.mesh.geometry.attributes.color, mc = R.mat.color, tc, k, v, sh;
+      for (k = 0; k < R.tintIdx.length; k++) { v = R.tintIdx[k]; tc = R.tintPal[R.tintWhich[k]]; sh = 0.55 + 0.45 * R.d.shade[v] / 255;
+        ca.array[v * 3] = sh * tc.r / mc.r; ca.array[v * 3 + 1] = sh * tc.g / mc.g; ca.array[v * 3 + 2] = sh * tc.b / mc.b; }
+      ca.needsUpdate = true;
+    }
     R.light1.intensity = dark ? 0.8 : 1.0;
     R.chainMat.color.set(dark ? 0xe4ecf5 : 0x14202b);
     R.ellMat.color.set(dark ? 0x9db0c4 : 0x4a5866);
@@ -1266,6 +1365,8 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
     if (sp.type === 'mill') {
       A.k = { C: V3(sp.C), a: V3(sp.a).normalize(), P0: V3(sp.P0), X0: V3(sp.X0), u: V3(sp.u).normalize(), E0: V3(sp.E0), V0: V3(sp.V0), u2: V3(sp.u2).normalize(), s: 0, s2: 0 };
       A.k.L = A.k.P0.distanceTo(A.k.X0); A.k.L2 = A.k.E0.distanceTo(A.k.V0);
+    } else if (sp.type === 'grip') {
+      A.k = { C: V3(sp.C), a: V3(sp.a).normalize(), arms: sp.arms.map(function (r) { return { g: r.g, u: V3(r.u).normalize() }; }), th: sp.th, d: sp.d };
     } else {
       A.k = { wheels: sp.wheels.map(function (w) { return { g: w.g, c: V3(w.c), a: V3(w.a).normalize(), s: w.s }; }) };
     }
@@ -1285,6 +1386,15 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
       if (G[3]) G[3].node.matrix.makeTranslation(k.u.x * k.s, k.u.y * k.s, k.u.z * k.s);
       if (G[4]) rodMatrix(G[4].node.matrix, k.E0, k.V0, E, Vv, k.a);
       if (G[5]) G[5].node.matrix.makeTranslation(k.u2.x * k.s2, k.u2.y * k.s2, k.u2.z * k.s2);
+    } else if (A.spec.type === 'grip') {
+      // cycle: hold open, close, hold closed, open (A.th is time in seconds)
+      var cyc = 7, t = (A.th % cyc) / cyc, e;
+      if (t < 0.15) e = 0; else if (t < 0.5) e = (t - 0.15) / 0.35; else if (t < 0.65) e = 1; else e = 1 - (t - 0.65) / 0.35;
+      e = e * e * (3 - 2 * e);
+      var f = e * (k.th.length - 1), i0 = Math.min(k.th.length - 2, Math.floor(f)), w = f - i0;
+      var ang = k.th[i0] + (k.th[i0 + 1] - k.th[i0]) * w, dd = k.d[i0] + (k.d[i0 + 1] - k.d[i0]) * w;
+      if (G[4]) rotAbout(G[4].node.matrix, k.C, k.a, ang);
+      k.arms.forEach(function (r) { if (G[r.g]) G[r.g].node.matrix.makeTranslation(-r.u.x * dd, -r.u.y * dd, -r.u.z * dd); });
     } else {
       k.wheels.forEach(function (w) { if (G[w.g]) rotAbout(G[w.g].node.matrix, w.c, w.a, th * w.s); });
     }
@@ -1303,7 +1413,7 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
   }
   function setRun(on) {
     A.run = !!on;
-    if (btnRun) { btnRun.setAttribute('aria-pressed', String(A.run)); btnRun.textContent = A.run ? 'Stop' : (S.model === 0 ? 'Start engine' : 'Run the engine'); }
+    if (btnRun) { btnRun.setAttribute('aria-pressed', String(A.run)); btnRun.textContent = A.run ? 'Stop' : (['Start engine', 'Run the engine', 'Work the gripper'][S.model]); }
     if (A.run && S.ready && S.phase !== 'idle') { S.phase = 'idle'; fillTrail(1); }
     kick();
   }
@@ -2103,7 +2213,7 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
     if (window.penView) window.penView.setActive(on && build === 'pen');
   }
   [].forEach.call(document.querySelectorAll('.bpick'), function (b) { b.addEventListener('click', function () { build = b.getAttribute('data-b'); applyBuild(); }); });
-  var TABS = ['overview', 'models', 'builds', 'career', 'skills', 'work', 'cleanup', 'senate', 'contact'];
+  var TABS = ['overview', 'models', 'builds', 'capstone', 'career', 'skills', 'work', 'cleanup', 'senate', 'contact'];
   var MAP = { s2: 'models', s6: 'cleanup', s7: 'senate' };
   var root = document.documentElement;
   var $ = function (s) { return document.querySelector(s); };
@@ -2130,7 +2240,7 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
   document.addEventListener('keydown', function (e) {
     var tag = (e.target && e.target.tagName) || '';
     if (tag === 'INPUT' || tag === 'TEXTAREA' || e.metaKey || e.ctrlKey || e.altKey) return;
-    if (/^[1-9]$/.test(e.key)) location.hash = '#' + TABS[+e.key - 1];
+    if (/^[0-9]$/.test(e.key)) location.hash = '#' + TABS[e.key === '0' ? 9 : +e.key - 1];
   });
 
   /* work index */
@@ -2187,6 +2297,19 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
   fromHash(true);
 })();
 </script>
-
+<script>
+(function () {
+  var img = document.querySelector('.cap-g'), cap = document.querySelector('.cap-gcap');
+  [].forEach.call(document.querySelectorAll('.cap-pick'), function (b) {
+    b.addEventListener('click', function () {
+      var g = b.getAttribute('data-g');
+      [].forEach.call(document.querySelectorAll('.cap-pick'), function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+      img.src = img.getAttribute('data-' + g);
+      img.alt = g === 'open' ? 'The three-prong gripper with its orange cam plate, prongs opened out.' : 'The three-prong gripper with the cam plate turned, prongs drawn in.';
+      cap.textContent = g === 'open' ? 'Gripper open: prongs out at the end of the cam slots.' : 'Gripper closed: the cam plate has turned and pulled the prongs in.';
+    });
+  });
+})();
+</script>
 </body>
 </html>
