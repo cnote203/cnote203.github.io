@@ -21,7 +21,7 @@
 <noscript><p style="font:16px/1.5 system-ui,sans-serif;max-width:560px;margin:48px auto;padding:0 16px">Christopher Accad. Engineer and procurement officer at National Defence, Ottawa. This site needs JavaScript for its interactive models; the résumé is at <a href="assets/Christopher_Accad_Resume.pdf">assets/Christopher_Accad_Resume.pdf</a> and email is christopher@accad.org.</p></noscript>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&family=Caveat:wght@500;600;700&family=Special+Elite&family=Courier+Prime:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@500&family=Caveat:wght@500;600;700&family=Special+Elite&family=Courier+Prime:wght@400;700&display=swap">
 <style>
 /* Concept: a case dossier on a desk. Each section is a manila file behind a folder tab;
    project pages are case files with pinned exhibits. */
@@ -200,6 +200,22 @@ details.more[open] > summary::before { content: "\2212  "; }
 .cbtn { min-height: 44px; padding: 0 14px; background: transparent; color: var(--ink); border: 1px solid var(--ink); font: 500 13px var(--font-mono); letter-spacing: 0.04em; cursor: pointer; }
 .cbtn[aria-pressed="true"].cad-pick { background: var(--ink); color: var(--paper); }
 .cbtn.run { border-width: 2px; font-weight: 600; }
+.nz { margin-top: 14px; border-top: 2px solid var(--ink); padding-top: 10px; }
+.nz-slide { display: flex; align-items: center; gap: 10px; min-height: 44px; font: 500 13px var(--font-typed); }
+.nz-slide input { flex: 1 1 auto; min-width: 0; accent-color: var(--scene); }
+.nz-slide output { min-width: 4ch; text-align: right; font-variant-numeric: tabular-nums; }
+.nz-state { margin: 4px 0 8px; font: 600 21px/1.15 var(--font-hand); color: var(--scene); min-height: 2.3em; }
+.nz-read { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; border-top: 1px solid var(--rule); }
+.nz-read div { padding: 8px 8px 8px 0; border-bottom: 1px solid var(--rule); min-width: 0; }
+.nz-read dt { font: 400 11px var(--font-typed); letter-spacing: 0.06em; text-transform: uppercase; color: var(--soft); }
+.nz-read dd { margin: 2px 0 0; font: 700 20px/1.1 var(--font-display); font-variant-numeric: tabular-nums; }
+.nz-note { margin: 8px 0 0; font: 400 12px/1.45 var(--font-typed); color: var(--soft); }
+@media (max-width: 480px) { .nz-read { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.noz-slot { margin: 22px 0 8px; }
+.noz-slot .cadbox { margin: 0; }
+.noz-slot #cad { height: clamp(360px, 60vh, 640px); }
+.noz-cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(20px, 3vw, 40px); align-items: start; }
+@media (max-width: 860px) { .noz-cols { grid-template-columns: minmax(0, 1fr); } }
 .cbtn.run[aria-pressed="true"] { background: var(--scene); border-color: var(--scene); color: var(--paper); }
 .cbtn:hover { border-color: var(--scene); }
 .cstatus { font: 400 13px var(--font-mono); color: var(--soft); min-height: 1em; }
@@ -591,6 +607,19 @@ body::before { background: var(--wood); }
           <button class="cbtn" id="cad-spin" type="button" aria-pressed="true">Spin on</button>
         </div>
         <p class="cstatus" id="cad-status" aria-live="polite"></p>
+        <div class="nz" id="nz" hidden>
+          <label class="nz-slide"><span>Nozzle position</span><input type="range" id="nz-e" min="0" max="100" value="0" step="1"><output id="nz-pct">0%</output></label>
+          <p class="nz-state" id="nz-state"></p>
+          <dl class="nz-read">
+            <div><dt>Throat dia.</dt><dd id="nz-dt">742 mm</dd></div>
+            <div><dt>Exit dia.</dt><dd id="nz-de">868 mm</dd></div>
+            <div><dt>Throat area</dt><dd id="nz-at">0.43 m²</dd></div>
+            <div><dt>Exit / throat</dt><dd id="nz-ar">1.37</dd></div>
+            <div><dt>Design exit Mach</dt><dd id="nz-m">1.7</dd></div>
+            <div><dt>Actuator</dt><dd id="nz-act">751 mm</dd></div>
+          </dl>
+          <p class="nz-note">Diameters are interpolated between the closed and open assemblies. Exit Mach is the ideal isentropic value for that area ratio with γ = 1.3, the Mach number the divergent section is shaped for when fully expanded.</p>
+        </div>
       </figure>
       <nav class="filenav" aria-label="File navigation"><a href="#overview">← Overview</a><a href="#builds">Next file: Builds →</a></nav>
     </section>
@@ -604,12 +633,13 @@ body::before { background: var(--wood); }
         <div class="cad-controls" role="group" aria-label="Choose a build" style="margin: 0 0 18px">
           <button class="cbtn bpick" data-b="tvp" type="button" aria-pressed="true">Thrust vector propeller</button>
           <button class="cbtn bpick" data-b="pen" type="button" aria-pressed="false">Double inverted pendulum</button>
+          <button class="cbtn bpick" data-b="noz" type="button" aria-pressed="false">F-15SE exhaust nozzle</button>
         </div>
         <div class="bld" data-b="tvp">
         <h2 class="big" id="t-builds">Thrust vector propeller, sketched to scale.</h2>
         <p class="lede">A propeller on a two-axis gimbal. Two servos push the ring through rods, tilting the motor up to 22° in any direction so the thrust can be steered. It flies on a Matek F405-WMN flight controller running INAV.</p>
         <figure class="sketchpad" id="tvp-pad">
-          <canvas id="tvp" data-src="assets/tvp.b64.txt" tabindex="0" role="img" aria-label="Line drawing of the thrust vector gimbal. Drag the propeller or ring to aim it, drag elsewhere to turn the view. Arrow keys aim, space toggles power."></canvas>
+          <canvas id="tvp" data-src="assets/tvp.bin.gz" tabindex="0" role="img" aria-label="Line drawing of the thrust vector gimbal. Drag the propeller or ring to aim it, drag elsewhere to turn the view. Arrow keys aim, space toggles power."></canvas>
           <div class="tvp-notes" id="tvp-notes" aria-hidden="true">
             <span class="callout" id="tvp-l-ring">tilting ring</span>
             <span class="callout" id="tvp-l-sa">servo A</span>
@@ -646,6 +676,47 @@ body::before { background: var(--wood); }
             </ol>
         </div>
 
+        </div>
+
+        <div class="bld" data-b="noz" hidden>
+        <h2 class="big" id="t-builds-noz">F-15SE exhaust nozzle, opening for the afterburner.</h2>
+        <p class="lede">A variable-area exhaust nozzle with 15-fold symmetry: one front mounting ring and 15 identical sectors of flaps, seals and actuators. I took a Blender model, broke it into 29 separate CAD parts with closed and open assemblies, then reworked the parts that could not have worked as drawn.</p>
+        <div class="tags"><span class="tag live">Interactive 3D</span><span class="tag">Blender to STEP</span><span class="tag">Mechanism reworked</span><span class="tag">OpenCascade · Python</span></div>
+        <div class="noz-slot" id="noz-slot"></div>
+        <div class="noz-cols">
+          <div>
+            <h3 class="sec">What I reworked</h3>
+            <ul class="steps">
+              <li><b>Seals:</b> moved 9.2 mm inboard so their edges ride on the flaps' inner faces instead of sinking into them.</li>
+              <li><b>Seal retention:</b> a captive guide bracket bolted to each flap, with a hanger and replaceable wear shoes on each seal.</li>
+              <li><b>Actuators:</b> split into a cylinder and a piston rod, with a clevis and pin at the flap end.</li>
+              <li><b>Front seal hinge:</b> a pin and knuckles, with the seal sliding 4.2 mm so the pin stays a fixed 363.5 mm from the convergent seal's forward edge.</li>
+            </ul>
+            <p class="plain">Press <b>Open the nozzle</b>: every moving part turns about its own screw axis from the closed to the open pose, and the exhaust plume follows it: short and pale blue at dry power, long and orange with shock diamonds in afterburner. Drag the <b>Nozzle position</b> slider to stop anywhere in between and read the numbers.</p>
+            <a class="caselink" href="https://github.com/cnote203/Throttle-Vector-Nozzle" target="_blank" rel="noopener">STEP files and BOM on GitHub</a>
+          </div>
+          <div>
+            <h3 class="sec">Measurements</h3>
+            <div class="metrics">
+          <div><b>29</b><span>unique parts, 601 placed in each assembly</span></div>
+          <div><b>555</b><span>instances that move from closed to open</span></div>
+          <div><b>371 → 544 mm</b><span>throat radius, so 2.15× the throat area when open</span></div>
+          <div><b>751 → 769 mm</b><span>actuator pin-to-pin length over the stroke</span></div>
+          <div><b>8 → 115 mm</b><span>gap between flaps that each seal covers</span></div>
+          <div><b>−2.1° → +26.7°</b><span>convergent seal swing about its forward edge</span></div>
+          <div><b>4 mm</b><span>largest gap between the rigid open pose and Blender's, on a 1.5 m nozzle</span></div>
+          <div><b>10 MB</b><span>STEP assembly, shown here as about 77,000 triangles</span></div>
+        </div>
+            <p class="note">Clearance was checked part against part around three sectors, closed and open, by overlap volume or, for surface parts, by intersection.</p>
+          </div>
+        </div>
+        <h3 class="sec">Next step · swivel to vector the thrust</h3>
+        <p class="plain">The nozzle only changes area so far. Next it gets the vectoring element used on the F-35B: a <b>three-bearing swivel module</b>, the duct section Rolls-Royce built for the F135 engine. The duct is cut into three segments with angled joints, each turning on its own bearing ring. Turning the segments against each other bends the duct, swinging the exhaust from straight back for forward flight to about 95° down for hover, in roughly 2.5 seconds.</p>
+        <ol class="steps">
+          <li><b>Model the three segments</b> between the engine and this nozzle, with the angled joints and a bearing ring at each.</li>
+          <li><b>Solve the segment angles</b> for any nozzle pitch, the same way the pushrods on the thrust vector propeller are solved for its tilt.</li>
+          <li><b>Add a vector slider</b> beside the area slider, so the plume can be pointed down while the nozzle opens and closes.</li>
+        </ol>
         </div>
 
         <div class="bld" data-b="pen" hidden>
@@ -839,6 +910,7 @@ body::before { background: var(--wood); }
         <li><button class="pbtn" type="button" data-title="Situation Board" data-case="s7" data-kind="Simulation" data-status="Live" data-desc="Projects how the 100 senators are likely to vote on foreign policy, healthcare, energy, banking and AI and tech measures across the 120th to 122nd Congresses. Python engine, React and 3D web board." aria-pressed="true">Senate Situation Board<span class="kindtag">simulation</span></button></li>
         <li><button class="pbtn" type="button" data-title="Assembly" data-case="s2" data-model="0" data-kind="CAD" data-status="3D model" data-desc="An F1-style go kart I designed, with 358 solids, shown as an interactive 3D model and drawn first by a 3D Fourier trace of its edges." aria-pressed="false">CAD Assembly<span class="kindtag">cad</span></button></li>
         <li><button class="pbtn" type="button" data-title="Engine" data-case="s2" data-model="1" data-kind="CAD" data-status="3D model" data-desc="A mill engine assembly with 108 solids, shown as an interactive 3D model and drawn first by a 3D Fourier trace of its edges." aria-pressed="false">Mill Engine<span class="kindtag">cad</span></button></li>
+        <li><button class="pbtn" type="button" data-title="Nozzle" data-case="builds" data-build="noz" data-kind="CAD" data-status="In progress · on GitHub" data-desc="An F-15SE variable-area exhaust nozzle, broken down from Blender into 29 STEP parts and 601 placements, with its seals, actuators and seal hinge reworked so the mechanism works. It opens and closes in 3D; thrust vectoring is next." data-href="https://github.com/cnote203/Throttle-Vector-Nozzle" data-hreflabel="STEP files on GitHub" aria-pressed="false">F-15SE Exhaust Nozzle<span class="kindtag">cad</span></button></li>
         <li><button class="pbtn" type="button" data-title="File Cleanup" data-case="s6" data-kind="Tool" data-status="Open source" data-desc="Review a messy folder visually with your team, agree on a cleaner structure, and copy it into a new folder. The original is never moved, renamed or deleted. Python standard library only." aria-pressed="false">File Cleanup Tool<span class="kindtag">tool</span></button></li>
         <li><button class="pbtn" type="button" data-title="CDPEAD" data-kind="Analytics" data-status="Independent" data-desc="The Canadian Defence Procurement Engineering Analytics Dashboard. I built it on my own to make procurement and engineering data easy to scan." aria-pressed="false">CDPEAD<span class="kindtag">analytics</span></button></li>
         <li><button class="pbtn" type="button" data-title="EntroCAD" data-kind="Company" data-status="Co-founder" data-desc="An engineering media company I co-founded, focused on explaining engineering to a wider audience." aria-pressed="false">EntroCAD<span class="kindtag">company</span></button></li>
@@ -1031,15 +1103,41 @@ body::before { background: var(--wood); }
 </div>
 
 <script type="application/json" id="cad-meta">{"nV":87356,"nT":175347,"idx32":true,"K":480,"M":8192,"dc":[0.0004713324150616561,-0.11370163995698675,0.07591157524807984],"half":[0.5720495195168981,0.35623631727768995,1.0],"scale":1825.0280010030278,"kept":99.94,"nEdges":600,"pathLen":211.96653206073088,"groups":[[71352,0],[218,1],[603,0],[218,2],[753,0],[1318,1],[54,0],[1318,2],[1332,3],[1332,4],[4092,0],[218,3],[218,4],[28,0],[70,5],[4232,0]],"anim":{"type":"kart","speed":9,"wheels":[{"g":1,"c":[0.48874,-0.162119,0.744846],"a":[0.999917,0.010149,-0.007886],"s":1},{"g":2,"c":[-0.48888,-0.162121,0.745028],"a":[0.999931,-0.01012,0.006045],"s":1},{"g":3,"c":[0.421676,-0.153496,-0.572076],"a":[0.999818,0.01909,-0.0],"s":1},{"g":4,"c":[-0.421809,-0.153496,-0.572076],"a":[0.999818,-0.01909,0.0],"s":1},{"g":5,"c":[0.055144,-0.127223,-0.503339],"a":[1.0,0.000112,-0.00011],"s":1}],"ex":{"p":[0.000482,-0.21199,-0.851604],"d":[0.0,0.33035,-0.943858],"size":0.05,"every":0.18}},"tint":{"colors":["#c1121f","#b8bcc2","#4b5058","#1e1f22","#17181a","#c9ccd1","#8e939a","#d1a12a","#e3b51d","#9b8e80","#2a2c30","#b59a5b"],"runs":[[17681,1],[11075,2],[5206,3],[2198,2],[2977,3],[8795,12],[642,4],[7114,3],[337,2],[1058,7],[2030,11],[2553,7],[4147,3],[4538,4],[699,8],[302,3],[520,7],[301,3],[218,7],[699,8],[54,3],[350,5],[155,6],[15,5],[9,6],[13,5],[21,6],[540,5],[29,6],[186,5],[54,3],[350,5],[155,6],[15,5],[9,6],[13,5],[21,6],[540,5],[29,6],[321,5],[14,6],[58,5],[12,6],[69,5],[274,6],[450,5],[12,6],[54,5],[44,6],[345,5],[14,6],[58,5],[12,6],[69,5],[274,6],[450,5],[12,6],[54,5],[44,6],[210,5],[443,7],[1368,4],[673,7],[14,3],[230,7],[14,3],[266,11],[244,4],[14,7],[230,4],[28,7],[364,9],[204,3],[436,7],[28,9],[70,7],[478,3],[244,4],[14,7],[182,9],[102,3],[14,7],[202,4],[28,7],[182,9],[476,3],[1652,10],[658,1]]}}</script>
-<script type="text/plain" id="cad-bin" data-src="assets/car.b64.txt"></script>
+<script type="text/plain" id="cad-bin" data-src="assets/car.cadz"></script>
 <script type="application/json" id="cad-meta2">{"nV": 34501, "nT": 66500, "idx32": false, "K": 480, "M": 8192, "dc": [0.15197799999438438, 0.0027477533361250053, -0.016706280052918958], "half": [1.0, 0.4506123146706874, 0.601845214799891], "scale": 162.0017865098722, "kept": 99.85, "nEdges": 500, "pathLen": 234.58345548358767, "groups": [[23839, 0], [5926, 1], [842, 3], [514, 2], [400, 5], [1030, 4], [70, 1], [507, 0], [74, 4], [1299, 0]], "anim": {"type": "mill", "speed": 3.2, "C": [0.586413, 0.080246, 0.243824], "a": [0.0, 0.0, -1.0], "P0": [0.480859, 0.13148, 0.243824], "X0": [-0.115431, 0.079629, 0.243824], "u": [1.0, 0.0, -0.0], "E0": [0.612956, 0.106172, -0.052469], "V0": [0.008642, 0.079629, -0.052469], "u2": [1.0, 0.0, -0.0], "ex": {"p": [-0.635795, 0.079629, -0.225306], "d": [0.0, 0.0, -1.0], "size": 0.05555, "every": 0.55}}}</script>
-<script type="text/plain" id="cad-bin2" data-src="assets/engine.b64.txt"></script>
+<script type="text/plain" id="cad-bin2" data-src="assets/engine.cadz"></script>
 <script type="application/json" id="cad-meta3">{"nV":41170,"nT":82608,"idx32":false,"K":480,"M":8192,"dc":[0.2550819256318757,-0.17168581767484548,-0.003028044045521614],"half":[0.854822638487186,1.0,0.987061689286478],"scale":481.7892024623782,"kept":99.98,"nEdges":500,"pathLen":134.74740654001462,"groups":[[1112,0],[1987,1],[1926,0],[4544,1],[468,0],[63,4],[298,0],[93,4],[28,0],[177,4],[28,0],[1038,4],[145,1],[26,0],[554,1],[1378,0],[129,3],[194,0],[28,1],[1158,0],[1959,1],[52,0],[56,1],[52,0],[28,4],[12,1],[14,3],[14,2],[14,3],[14,2],[48,0],[3856,3],[3728,2],[30,3],[30,2],[79,3],[79,2],[14,3],[14,2],[14,3],[14,2],[264,0],[14,3],[14,2],[14,3],[14,2],[14,3],[14,2],[1133,0],[1935,3],[1076,0],[1940,2],[304,3],[304,2],[408,3],[408,2],[12,3],[12,2],[14,3],[14,2],[133,3],[133,2],[1079,0],[1940,3],[1065,0],[1935,2],[12,3],[12,2],[28,0],[554,3],[554,2],[42,1],[94,2],[93,1],[93,2]],"anim":{"type":"grip","speed":1,"C":[0.243273,-0.270383,0.0],"a":[0,1,0],"arms":[{"g":1,"u":[-1.0,0,0.0]},{"g":2,"u":[0.5,0,0.866025]},{"g":3,"u":[0.5,0,-0.866025]}],"th":[0.0,0.05236,0.10472,0.15708,0.20944,0.2618,0.31416,0.36652,0.41888,0.47124,0.5236,0.57596,0.62832,0.68068,0.73304,0.7854,0.83776,0.89012,0.94248,0.99484,1.0472,1.09956],"d":[0.0,0.0,0.008302,0.024907,0.043588,0.066419,0.087175,0.105855,0.126611,0.149443,0.172275,0.197182,0.217938,0.240769,0.261525,0.282281,0.303037,0.323793,0.342473,0.359078,0.373607,0.392288]},"tint":{"color":"#e8731a","runs":[[10874,0],[888,1],[29408,0]]}}</script>
-<script type="text/plain" id="cad-bin3" data-src="assets/gripper.b64.txt"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script type="text/plain" id="cad-bin3" data-src="assets/gripper.cadz"></script>
+<script type="application/json" id="cad-meta4">{"nV":39942,"nT":77180,"idx32":false,"K":480,"M":8192,"dc":[0.010150980371720852,-0.0002645502995252549,0.003646496825455068],"half":[0.823822425271647,0.9999999199999999,1.0],"scale":750.0,"kept":99.85,"nEdges":600,"pathLen":0.0,"double":true,"anim":{"type":"nozzle","speed":1,"cyc":8},"tint":{"colors":["#2a2c30","#4b5058","#5d636b","#6b7178","#7d8590","#8e939a","#9b5a2a","#a3a9b0","#b59a5b","#b8bcc2","#c9ccd1","#d1a12a","#dfe3e7"],"runs":[[192,11],[1020,6],[2490,3],[4140,12],[3510,13],[1080,1],[120,8],[4710,4],[1080,1],[1650,2],[2700,10],[1200,2],[1500,9],[1020,5],[480,7],[10080,1],[2820,9],[150,1]]},"view":[0.15,0.25],"frame":[0.62,1.38]}</script>
+<script type="text/plain" id="cad-bin4" data-src="assets/nozzle.cadz"></script>
+<script>
+/* loaders: three.js is fetched only when a 3D file is opened (or about to be), and model files are gzip'd binary */
+(function () {
+  var p3 = null;
+  window.loadThree = function () {
+    if (window.THREE) return Promise.resolve();
+    return p3 || (p3 = new Promise(function (res, rej) {
+      var sc = document.createElement('script'); sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js'; sc.async = true;
+      sc.onload = function () { res(); }; sc.onerror = function () { p3 = null; rej(new Error('three.js')); };
+      document.head.appendChild(sc);
+    }));
+  };
+  window.fetchBin = function (url) {
+    return fetch(url).then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.arrayBuffer(); }).then(function (buf) {
+      var u8 = new Uint8Array(buf);
+      if (u8[0] !== 0x1f || u8[1] !== 0x8b) return u8;          // already inflated by the server
+      if (!window.DecompressionStream) throw new Error('gzip');
+      return new Response(new Blob([u8]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer().then(function (b) { return new Uint8Array(b); });
+    });
+  };
+  /* warm three.js when someone heads for a 3D file */
+  function warm(e) { var a = e.target.closest && e.target.closest('a[href="#models"], a[href="#builds"], [data-model], [data-build]'); if (a) window.loadThree().catch(function () {}); }
+  document.addEventListener('pointerover', warm, { passive: true }); document.addEventListener('focusin', warm);
+})();
+</script>
 <script>
 (function () {
-  var MODELS = [{ bin: 'cad-bin', meta: 'cad-meta', word: 'New.STEP' }, { bin: 'cad-bin2', meta: 'cad-meta2', word: 'Mill_Engine.STEP' }, { bin: 'cad-bin3', meta: 'cad-meta3', word: 'Spyder_design_assem.STEP' }];
+  var MODELS = [{ bin: 'cad-bin', meta: 'cad-meta', word: 'New.STEP' }, { bin: 'cad-bin2', meta: 'cad-meta2', word: 'Mill_Engine.STEP' }, { bin: 'cad-bin3', meta: 'cad-meta3', word: 'Spyder_design_assem.STEP' }, { bin: 'cad-bin4', meta: 'cad-meta4', word: 'F15SE_Nozzle_closed.STEP' }];
   var cv = document.getElementById('cad');
   if (!cv || !document.getElementById('cad-bin')) return;
   var elBin, elMeta, meta, cache = [];
@@ -1060,20 +1158,24 @@ body::before { background: var(--wood); }
   }
   function accent() { return getComputedStyle(document.body).getPropertyValue('--scene').trim() || '#6fb2ff'; }
 
-  function decode() {
-    if (cache[S.model]) return cache[S.model];
-    var txt = elBin.textContent.replace(/\s+/g, '');
-    var bin = atob(txt), u8 = new Uint8Array(bin.length), i;
-    for (i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
-    var buf = u8.buffer, off = 0;
-    function take(C, n) { var a = new C(buf, off, n); off += a.byteLength; off += (4 - off % 4) % 4; return a; }
-    var d = {};
-    d.q = take(Int16Array, meta.nV * 3);
-    d.shade = take(Uint8Array, meta.nV);
-    d.idx = meta.idx32 ? take(Uint32Array, meta.nT * 3) : take(Uint16Array, meta.nT * 3);
-    d.series = take(Float32Array, meta.K * 7);
-    elBin.textContent = '';
-    cache[S.model] = d;
+  function decode() { return cache[S.model]; }
+  /* .cadz: 'CADZ', nV, nT, K, position bytes, index bytes, then zigzag-delta varint positions, shade bytes,
+     zigzag-delta varint indices and the float32 Fourier series */
+  function parseCadz(u8, idx32) {
+    var dv = new DataView(u8.buffer, u8.byteOffset, u8.byteLength), nV = dv.getUint32(4, true), nT = dv.getUint32(8, true), K = dv.getUint32(12, true);
+    var pb = dv.getUint32(16, true), ib = dv.getUint32(20, true), o = 24, d = {}, i, v, sh, b, prev;
+    d.q = new Int16Array(nV * 3); var acc = [0, 0, 0];
+    for (i = 0; i < nV * 3; i++) { v = 0; sh = 0; do { b = u8[o++]; v += (b & 127) * Math.pow(2, sh); sh += 7; } while (b & 128); acc[i % 3] += (v % 2 ? -(v + 1) / 2 : v / 2); d.q[i] = acc[i % 3]; }
+    d.shade = u8.slice(o, o + nV); o += nV;
+    d.idx = idx32 ? new Uint32Array(nT * 3) : new Uint16Array(nT * 3); prev = 0;
+    for (i = 0; i < nT * 3; i++) { v = 0; sh = 0; do { b = u8[o++]; v += (b & 127) * Math.pow(2, sh); sh += 7; } while (b & 128); prev += (v % 2 ? -(v + 1) / 2 : v / 2); d.idx[i] = prev; }
+    o = (o + 3) & ~3;
+    d.series = new Float32Array(u8.buffer.slice(u8.byteOffset + o, u8.byteOffset + o + K * 28)); o += K * 28;
+    if (o + 4 <= u8.byteLength) {            /* optional tail: per-instance vertex counts and screw motions (n, angle, point, slide) */
+      var nI = dv.getUint32(o, true); o += 4;
+      d.counts = new Uint32Array(u8.buffer.slice(u8.byteOffset + o, u8.byteOffset + o + nI * 4)); o += nI * 4;
+      d.screws = new Float32Array(u8.buffer.slice(u8.byteOffset + o, u8.byteOffset + o + nI * 32));
+    }
     return d;
   }
 
@@ -1101,7 +1203,10 @@ body::before { background: var(--wood); }
     g.setIndex(new T.BufferAttribute(d.idx, 1));
     g.computeBoundingSphere();
     R.radius = g.boundingSphere.radius; R.center = g.boundingSphere.center.clone();
-    R.mesh = new T.Mesh(g, R.mat);
+    if (meta.frame) { R.center.x += meta.frame[0]; R.radius *= meta.frame[1]; }
+    R.mat.side = meta.double ? T.DoubleSide : T.FrontSide; R.mat.needsUpdate = true;
+    R.base = meta.anim && meta.anim.type === 'nozzle' ? pos.slice() : null;
+    R.mesh = new T.Mesh(g, R.mat); if (R.base) R.mesh.frustumCulled = false;
     R.inner.position.copy(R.center).multiplyScalar(-1);
     R.inner.add(R.mesh);
     var K = meta.K;
@@ -1119,22 +1224,25 @@ body::before { background: var(--wood); }
     R.tip = new T.Mesh(new T.SphereGeometry(0.018, 14, 10), new T.MeshBasicMaterial({ color: 0xffffff }));
     R.inner.add(R.tip);
     S.built = S.model;
+    if (meta.view && !R.ordered) { S.yaw = meta.view[0]; S.pitch = meta.view[1]; }
     buildAnim();
   }
 
   function withData(m, cb) {
     var el = document.getElementById(MODELS[m].bin);
-    if (cache[m] || el.textContent.length > 100) return cb();
+    if (cache[m] && window.THREE) return cb();
     if (status) status.textContent = 'Loading model...';
-    fetch(el.getAttribute('data-src')).then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.text(); }).then(function (t) {
-      el.textContent = t; if (status) status.textContent = ''; cb();
-    }).catch(function () { if (status) status.textContent = 'The model could not be loaded.'; });
+    Promise.all([cache[m] ? null : window.fetchBin(el.getAttribute('data-src')), window.loadThree()]).then(function (r) {
+      if (!cache[m]) cache[m] = parseCadz(r[0], JSON.parse(document.getElementById(MODELS[m].meta).textContent).idx32);
+      if (status) status.textContent = ''; cb();
+    }).catch(function () { loading = false; if (status) status.textContent = 'The model could not be loaded.'; });
   }
   var loading = false;
   function init() {
     if (S.ready || S.failed || loading) return;
     loading = true;
-    withData(S.model, function () { loading = false; doInit(); });
+    var m = S.model;
+    withData(m, function () { loading = false; if (m !== S.model) { init(); return; } doInit(); });   // the model changed while this one loaded
   }
   function doInit() {
     if (S.ready || S.failed) return;
@@ -1174,7 +1282,7 @@ body::before { background: var(--wood); }
     for (k = 0; k < bs.length; k++) { var on = +bs[k].getAttribute('data-m') === i; bs[k].setAttribute('aria-pressed', String(on)); }
     var bl = document.querySelectorAll('.mdl'); for (k = 0; k < bl.length; k++) bl[k].hidden = +bl[k].getAttribute('data-m') !== i;
     if (document.body.classList.contains('cad-on') || S.ready) document.body.setAttribute('data-model', String(i));
-    if (S.ready) { withData(i, function () { try { build(); applyTheme(); resize(); S.yaw = -0.6; S.pitch = 0.28; restart(); } catch (e) {} }); }
+    if (S.ready) { withData(i, function () { if (S.model !== i) return; try { build(); applyTheme(); resize(); var vw = meta.view || [-0.6, 0.28]; S.yaw = vw[0]; S.pitch = vw[1]; restart(); } catch (e) {} }); }
     else { load(); }
   }
 
@@ -1193,6 +1301,7 @@ body::before { background: var(--wood); }
     R.chainMat.color.set(dark ? 0xe4ecf5 : 0x14202b);
     R.ellMat.color.set(dark ? 0x9db0c4 : 0x4a5866);
     R.trailMat.color.set(c);
+    if (typeof flameBlend === 'function') flameBlend();
     R.tip.material.color.set(c);
   }
 
@@ -1380,6 +1489,14 @@ body::before { background: var(--wood); }
     var T = R.T, i;
     A.groups = []; A.puffs = []; A.th = 0; A.emit = 0; A.spec = meta.anim || null;
     if (btnRun) btnRun.hidden = !A.spec;
+    if (A.spec && A.spec.type === 'nozzle') {
+      A.k = { e: -1 }; A.manual = null; A.open = 0;
+      makeFlame();
+      if (nz) nz.hidden = false;
+      setRun(false); return;
+    }
+    if (nz) nz.hidden = true;
+    A.flame = null;
     if (!A.spec || !meta.groups) { A.spec = null; return; }
     var gv = new Uint8Array(meta.nV), o = 0;
     meta.groups.forEach(function (r) { gv.fill(r[1], o, o + r[0]); o += r[0]; });
@@ -1431,6 +1548,29 @@ body::before { background: var(--wood); }
       var ang = k.th[i0] + (k.th[i0 + 1] - k.th[i0]) * w, dd = k.d[i0] + (k.d[i0 + 1] - k.d[i0]) * w;
       if (G[4]) rotAbout(G[4].node.matrix, k.C, k.a, ang);
       k.arms.forEach(function (r) { if (G[r.g]) G[r.g].node.matrix.makeTranslation(-r.u.x * dd, -r.u.y * dd, -r.u.z * dd); });
+    } else if (A.spec.type === 'nozzle') {
+      // cycle: hold closed, open, hold open, close (A.th is time in seconds)
+      var cy = A.spec.cyc || 8, tn = (A.th % cy) / cy, en;
+      if (tn < 0.15) en = 0; else if (tn < 0.5) en = (tn - 0.15) / 0.35; else if (tn < 0.65) en = 1; else en = 1 - (tn - 0.65) / 0.35;
+      en = en * en * (3 - 2 * en);
+      if (A.manual !== null) en = A.manual;
+      if (Math.abs(en - k.e) < 1e-5) return;
+      k.e = en; A.open = en;
+      var d = R.d, src = R.base, dst = R.mesh.geometry.attributes.position.array, sc = d.screws, o = 0, ii;
+      for (ii = 0; ii < d.counts.length; ii++) {
+        var b = ii * 8, n0 = sc[b], n1 = sc[b + 1], n2 = sc[b + 2], an = sc[b + 3] * en, px = sc[b + 4], py = sc[b + 5], pz = sc[b + 6], sl = sc[b + 7] * en;
+        var cs = Math.cos(an), sn = Math.sin(an), cc = 1 - cs, end = o + d.counts[ii];
+        var m00 = cs + n0 * n0 * cc, m01 = n0 * n1 * cc - n2 * sn, m02 = n0 * n2 * cc + n1 * sn;
+        var m10 = n1 * n0 * cc + n2 * sn, m11 = cs + n1 * n1 * cc, m12 = n1 * n2 * cc - n0 * sn;
+        var m20 = n2 * n0 * cc - n1 * sn, m21 = n2 * n1 * cc + n0 * sn, m22 = cs + n2 * n2 * cc;
+        var tx = px + sl * n0, ty = py + sl * n1, tz = pz + sl * n2;
+        for (; o < end; o++) {
+          var x = src[o * 3] - px, y = src[o * 3 + 1] - py, z = src[o * 3 + 2] - pz;
+          dst[o * 3] = m00 * x + m01 * y + m02 * z + tx; dst[o * 3 + 1] = m10 * x + m11 * y + m12 * z + ty; dst[o * 3 + 2] = m20 * x + m21 * y + m22 * z + tz;
+        }
+      }
+      R.mesh.geometry.attributes.position.needsUpdate = true;
+      placeFlame(en); readout(en);
     } else {
       k.wheels.forEach(function (w) { if (G[w.g]) rotAbout(G[w.g].node.matrix, w.c, w.a, th * w.s); });
     }
@@ -1443,17 +1583,87 @@ body::before { background: var(--wood); }
       if (A.spec.ex) { A.emit -= dt; if (A.emit <= 0) { spawn(); A.emit = A.spec.ex.every * (0.8 + Math.random() * 0.4); } }
     }
     poseAnim();
+    if (A.flame) { A.flame.t += dt; A.flame.mats.forEach(function (mt) { mt.uniforms.uT.value = A.flame.t; }); var fv = R.mesh.visible && S.mode !== 'trace'; A.flame.meshes.forEach(function (fm) { fm.visible = fv; }); }
     var any = false;
     A.puffs.forEach(function (p) { updatePuff(p, dt); if (p.alive) any = true; });
     return A.run || any;
   }
   function setRun(on) {
     A.run = !!on;
-    if (btnRun) { btnRun.setAttribute('aria-pressed', String(A.run)); btnRun.textContent = A.run ? 'Stop' : (['Start engine', 'Run the engine', 'Work the gripper'][S.model]); }
+    if (btnRun) { btnRun.setAttribute('aria-pressed', String(A.run)); btnRun.textContent = A.run ? 'Stop' : (['Start engine', 'Run the engine', 'Work the gripper', 'Open the nozzle'][S.model]); }
     if (A.run && S.ready && S.phase !== 'idle') { S.phase = 'idle'; fillTrail(1); }
     kick();
   }
-  if (btnRun) btnRun.addEventListener('click', function () { if (!S.ready) init(); setRun(!A.run); });
+  if (btnRun) btnRun.addEventListener('click', function () {
+    if (!S.ready) init();
+    if (!A.run && A.manual !== null && A.spec && A.spec.type === 'nozzle') {   // carry on the cycle from where the slider left it
+      var lo = 0, hi = 1, x; for (var it = 0; it < 30; it++) { x = (lo + hi) / 2; if (x * x * (3 - 2 * x) < A.manual) lo = x; else hi = x; }
+      A.th = (0.15 + 0.35 * x) * (A.spec.cyc || 8); A.manual = null;
+    }
+    setRun(!A.run);
+  });
+
+  /* ---------- the nozzle's exhaust plume and readout ---------- */
+  var nz = document.getElementById('nz'), nzE = document.getElementById('nz-e');
+  var NZ = { rt: [371, 544], re: [434, 691], act: [751, 769], xe: [0.824, 0.909] };
+  function lerp(a, e) { return a[0] + (a[1] - a[0]) * e; }
+  var FLAME_VS = 'uniform float uT; uniform float uE; uniform float uLen; uniform float uR; uniform float uCore; varying float vV; varying float vA; varying float vF; varying float vL;' +
+    'void main() { vec3 p = position; float v = p.y; vV = v; vA = atan(p.z, p.x);' +
+    ' float n = 4.0 + 3.0 * uE; float lobe = 0.5 + 0.5 * cos(6.2832 * v * n); vL = lobe; float shock = 0.0;' +
+    ' float taper = mix(1.0 - 0.85 * pow(v, 0.9), 1.0 - 0.7 * pow(v, 1.4), uE);' +
+    ' float wob = 0.05 * sin(vA * 3.0 + uT * 23.0 + v * 17.0) * v + 0.04 * sin(uT * 31.0 + v * 29.0) * v;' +
+    ' float pinch = uCore < 0.7 ? mix(1.0, 0.3 + 0.7 * lobe, smoothstep(0.2, 0.9, uE)) : 1.0;' +
+    ' float r = uR * uCore * (taper + shock + wob) * pinch; p.x *= r; p.z *= r; p.y *= uLen;' +
+    ' vec4 mv = modelViewMatrix * vec4(p, 1.0); vec3 nrm = normalize(normalMatrix * normalize(vec3(p.x, 0.0, p.z)));' +
+    ' vF = abs(dot(nrm, normalize(-mv.xyz))); gl_Position = projectionMatrix * mv; }';
+  var FLAME_FS = 'uniform float uT; uniform float uE; uniform float uCore; uniform float uOp; varying float vV; varying float vA; varying float vF; varying float vL;' +
+    'float h(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }' +
+    'float nse(vec2 p) { vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f); return mix(mix(h(i), h(i + vec2(1, 0)), f.x), mix(h(i + vec2(0, 1)), h(i + vec2(1, 1)), f.x), f.y); }' +
+    'void main() { float v = vV; float turb = nse(vec2(v * 9.0 - uT * 14.0, vA * 2.0 + uT * 3.0)) * 0.6 + nse(vec2(v * 23.0 - uT * 30.0, vA * 5.0)) * 0.4;' +
+    ' float dia = pow(vL, 3.0) * smoothstep(0.2, 0.9, uE) * (1.0 - v) * step(uCore, 0.7);' +
+    ' vec3 dry = vec3(0.55, 0.72, 1.0); vec3 ab = vec3(1.0, 0.52, 0.12); vec3 hot = vec3(1.0, 0.93, 0.75);' +
+    ' vec3 col = mix(dry, ab, smoothstep(0.15, 0.85, uE)); col = mix(col, hot, (1.0 - v) * (0.25 + 0.5 * uCore) + dia * 0.9);' +
+    ' float a = pow(vF, 1.2) * pow(1.0 - v, 1.3 - 0.5 * uE) * (0.55 + 0.6 * turb) * uOp * (0.6 + 0.4 * uE + 0.5 * (1.0 - uE) * uCore);' +
+    ' a = a * 1.5 + dia * 0.35 * vF; gl_FragColor = vec4(col, clamp(a, 0.0, 1.0)); }';
+  function makeFlame() {
+    var T = R.T, geo = new T.CylinderGeometry(1, 1, 1, 48, 64, true); geo.translate(0, 0.5, 0);
+    var F = { t: 0, mats: [], meshes: [], node: new T.Group() };
+    [[1.0, 0.55], [0.55, 0.9]].forEach(function (c) {
+      var mt = new T.ShaderMaterial({ uniforms: { uT: { value: 0 }, uE: { value: 0 }, uLen: { value: 1 }, uR: { value: 0.5 }, uCore: { value: c[0] }, uOp: { value: c[1] } },
+        vertexShader: FLAME_VS, fragmentShader: FLAME_FS, transparent: true, depthWrite: false, side: T.DoubleSide });
+      var me = new T.Mesh(geo, mt); me.frustumCulled = false; me.renderOrder = 4; F.node.add(me); F.mats.push(mt); F.meshes.push(me);
+    });
+    F.node.rotation.z = -Math.PI / 2; R.inner.add(F.node); A.flame = F;
+    flameBlend(); placeFlame(0); readout(0);
+  }
+  function flameBlend() { if (A.flame) { var add = isDark(); A.flame.mats.forEach(function (mt) { mt.blending = add ? R.T.AdditiveBlending : R.T.NormalBlending; mt.needsUpdate = true; }); } }
+  function placeFlame(e) {
+    if (!A.flame) return;
+    var r = lerp(NZ.re, e) / 750 * 0.9, L = r * (1.1 + 1.3 * e);
+    A.flame.node.position.set(lerp(NZ.xe, e) - 0.012, 0, 0);
+    A.flame.mats.forEach(function (mt) { mt.uniforms.uE.value = e; mt.uniforms.uR.value = r; mt.uniforms.uLen.value = L * (mt.uniforms.uCore.value < 0.7 ? 0.62 : 1); });
+  }
+  function machFor(ar, g) {   // supersonic root of the isentropic area-Mach relation
+    var lo = 1, hi = 6, k = (g + 1) / (2 * (g - 1)), M, f;
+    for (var i = 0; i < 50; i++) { M = (lo + hi) / 2; f = Math.pow(2 / (g + 1) * (1 + (g - 1) / 2 * M * M), k) / M; if (f < ar) lo = M; else hi = M; }
+    return M;
+  }
+  function setTxt(id, t) { var el = document.getElementById(id); if (el) el.textContent = t; }
+  function readout(e) {
+    var rt = lerp(NZ.rt, e), re = lerp(NZ.re, e), At = Math.PI * rt * rt / 1e6, ar = (re * re) / (rt * rt);
+    setTxt('nz-pct', Math.round(e * 100) + '%'); if (nzE && document.activeElement !== nzE) nzE.value = Math.round(e * 100);
+    setTxt('nz-dt', Math.round(2 * rt).toLocaleString('en-CA') + ' mm'); setTxt('nz-de', Math.round(2 * re).toLocaleString('en-CA') + ' mm');
+    setTxt('nz-at', At.toFixed(2) + ' m²'); setTxt('nz-ar', ar.toFixed(2)); setTxt('nz-m', machFor(ar, 1.3).toFixed(2)); setTxt('nz-act', Math.round(lerp(NZ.act, e)) + ' mm');
+    setTxt('nz-state', e < 0.25 ? 'Dry power: throat closed down to hold the engine\'s back-pressure.'
+      : e < 0.75 ? 'Lighting the afterburner: hotter, thinner gas needs a bigger throat.'
+      : 'Full afterburner: throat area ×' + (At / (Math.PI * 0.371 * 0.371)).toFixed(2) + ', so the hot gas does not back up into the engine.');
+  }
+  if (nzE) nzE.addEventListener('input', function () {
+    if (!S.ready) return;
+    if (A.run) setRun(false);
+    if (S.phase !== 'idle') { S.phase = 'idle'; fillTrail(1); }
+    A.manual = +nzE.value / 100; kick();
+  });
 
   // pointer: drag to orbit
   cv.addEventListener('pointerdown', function (e) {
@@ -1493,6 +1703,7 @@ body::before { background: var(--wood); }
 
   window.cadView = {
     setModel: setModel,
+    model: function () { return S.model; },
     setActive: function (on) {
       S.active = !!on;
       document.body.classList.toggle('cad-on', S.active && !S.failed);
@@ -1510,7 +1721,7 @@ body::before { background: var(--wood); }
 /* Thrust vector gimbal, drawn as pencil line art on the dossier paper.
    Geometry and kinematics follow Christopher's assembly file (units mm, Z up):
    post, ring and base are the printed parts; motor, propeller and servos are stand-ins. */
-(function () {
+function bootTvp() {
   var cv = document.getElementById('tvp');
   if (!cv || !window.THREE) return;
   var T = THREE;
@@ -1586,10 +1797,8 @@ body::before { background: var(--wood); }
   }
 
   /* ---------- mesh data: int16 positions / 100, int8 normals, uint16 indices ---------- */
-  function decodeParts(b64) {
-    var bin = atob(b64), u8 = new Uint8Array(bin.length), i;
-    for (i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
-    var dv = new DataView(u8.buffer), parts = [], o = 0, p;
+  function decodeParts(u8) {
+    var i, dv = new DataView(u8.buffer, u8.byteOffset, u8.byteLength), parts = [], o = 0, p;
     for (p = 0; p < 3; p++) {
       var nv = dv.getUint32(o, true), ni = dv.getUint32(o + 4, true); o += 8;
       var pos = new Float32Array(nv * 3), nor = new Float32Array(nv * 3);
@@ -1927,8 +2136,8 @@ body::before { background: var(--wood); }
   function init() {
     if (ready || loading || failed) return;
     loading = true; if (status) status.textContent = 'Sketching the assembly...';
-    fetch(cv.getAttribute('data-src')).then(function (r) { if (!r.ok) throw new Error('http'); return r.text(); }).then(function (t) {
-      try { build(t.replace(/\s+/g, '')); }
+    window.fetchBin(cv.getAttribute('data-src')).then(function (t) {
+      try { build(t); }
       catch (err) { failed = true; loading = false; if (status) status.textContent = 'This sketch needs WebGL, which this browser did not provide.'; return; }
       ready = true; loading = false; if (status) status.textContent = '';
       pad.classList.add('ready'); resize(); applyInk(); kick();
@@ -1941,6 +2150,15 @@ body::before { background: var(--wood); }
   if (window.matchMedia) { var mq = matchMedia('(prefers-color-scheme: dark)'); if (mq.addEventListener) mq.addEventListener('change', function () { applyInk(); kick(); }); }
 
   window.tvpView = { setActive: function (on) { active = !!on; if (active) { init(); resize(); kick(); } } };
+}
+(function () {   /* stand-in until three.js arrives */
+  var booted = false, want = false;
+  window.tvpView = { setActive: function (on) {
+    want = !!on; if (!want) return;
+    window.loadThree().then(function () { if (!booted) { booted = true; bootTvp(); } if (window.tvpView && window.tvpView.setActive) window.tvpView.setActive(want); }, function () {
+      var st = document.getElementById('tvp-status'); if (st) st.textContent = 'The sketch could not be loaded.';
+    });
+  } };
 })();
 </script>
 
@@ -2271,6 +2489,15 @@ body::before { background: var(--wood); }
     [].forEach.call(document.querySelectorAll('.bpick'), function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-b') === build)); });
     if (window.tvpView) window.tvpView.setActive(on && build === 'tvp');
     if (window.penView) window.penView.setActive(on && build === 'pen');
+    var cb = document.querySelector('.cadbox'), slot = document.getElementById('noz-slot'), mf = document.getElementById('file-models'), cv3 = window.cadView;
+    if (cb && slot && mf && cv3) {
+      if (on && build === 'noz') { if (cb.parentNode !== slot) slot.appendChild(cb); cv3.setModel(3); cv3.setActive(true); }
+      else {
+        if (cb.parentNode !== mf) mf.insertBefore(cb, mf.querySelector('.filenav'));
+        if (cv3.model() === 3) cv3.setModel(0);
+        cv3.setActive(curTab === 'models');
+      }
+    }
     var n = document.getElementById('cls-n'); if (n) n.textContent = String(TABS.indexOf(curTab) + 1);
     if (window.redPen) window.redPen();
   }
@@ -2380,7 +2607,7 @@ body::before { background: var(--wood); }
   var NOTES = [
     { file: 'overview', sel: '#file-overview .metrics > div:nth-child(1) b', kind: 'circle', text: 'checked ✓' },
     { file: 'overview', sel: '#t-overview em', kind: 'under', text: 'noted.', place: 'below' },
-    { file: 'models', sel: '#file-models .mdl:not([hidden]) .metrics > div:nth-child(3) b', kind: 'circle', text: 'all of them?' },
+    { file: 'models', sel: '#file-models .mdl[data-m="0"]:not([hidden]) .metrics > div:nth-child(3) b', kind: 'circle', text: 'all of them?' },
     { file: 'builds', sel: '#t-builds-pen', kind: 'under', text: 'knock it over. it gets back up.', place: 'below', last: true },
     { file: 'builds', sel: '#t-builds', kind: 'under', text: 'drag the gimbal', place: 'below', last: true },
     { file: 'capstone', sel: '#file-capstone .metrics > div:nth-child(1) b', kind: 'circle', text: 'with a factor of 2 ✓' },
@@ -2461,6 +2688,5 @@ body::before { background: var(--wood); }
   later();
 })();
 </script>
-
 </body>
 </html>
