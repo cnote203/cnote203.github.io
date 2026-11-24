@@ -414,11 +414,49 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
   .folder::after { width: 90px; height: 90px; bottom: 20px; }
 }
 
+
+/* ---------- v13: the desk, classification banners, the reviewer's red pen ---------- */
+:root { --wood: #4b3021; --wood-hi: rgba(255, 214, 160, 0.20); --wood-vig: rgba(10, 5, 2, 0.55); --pen: #c4161c;
+  --woodgrain: url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27900%27%20height%3D%27900%27%3E%3Cfilter%20id%3D%27w%27%20x%3D%270%27%20y%3D%270%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%27.0022%20.055%27%20numOctaves%3D%274%27%20seed%3D%277%27%20stitchTiles%3D%27stitch%27/%3E%3CfeColorMatrix%20values%3D%270%200%200%200%20.09%200%200%200%200%20.05%200%200%200%200%20.02%201.25%200%200%200%20-.38%27/%3E%3C/filter%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20filter%3D%27url(%23w)%27/%3E%3C/svg%3E"); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --wood: #20150e; --wood-hi: rgba(255, 196, 120, 0.16); --wood-vig: rgba(0, 0, 0, 0.72); --pen: #ff7a6b; } }
+:root[data-theme="dark"] { --wood: #20150e; --wood-hi: rgba(255, 196, 120, 0.16); --wood-vig: rgba(0, 0, 0, 0.72); --pen: #ff7a6b; }
+body { background-color: var(--wood); background-image: var(--woodgrain), linear-gradient(90deg, rgba(0, 0, 0, 0.10), transparent 18%, transparent 82%, rgba(0, 0, 0, 0.10)); background-size: 900px 900px, 100% 100%; }
+body::before { background: var(--wood); }
+.desk-light { position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(ellipse 70% 55% at 22% -6%, var(--wood-hi), transparent 70%), radial-gradient(ellipse 120% 90% at 50% 35%, transparent 45%, var(--wood-vig) 100%); }
+.wrap { position: relative; z-index: 1; }
+.desk-prop { position: absolute; z-index: 0; pointer-events: none; display: none; filter: drop-shadow(3px 5px 4px rgba(0, 0, 0, 0.45)); }
+@media (min-width: 1440px) { .desk-prop { display: block; } }
+.desk-pencil { left: calc(50% - 720px - 10px); top: 230px; width: 70px; transform: rotate(-14deg); }
+.desk-clip { left: calc(50% + 640px); top: 520px; width: 22px; transform: rotate(28deg); }
+/* classification banners, as on a Government of Canada document */
+.cls { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 0 auto; font: 700 12.5px var(--font-typed); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink); text-align: center; }
+.cls::before, .cls::after { content: ""; flex: 1 1 0; max-width: 140px; border-top: 1px solid var(--rule); }
+.cls-top { margin: calc(-1 * clamp(10px, 2vw, 26px)) 0 clamp(16px, 2.4vw, 26px); }
+.cls-bot { position: relative; margin: clamp(26px, 3vw, 40px) 0 calc(-1 * clamp(8px, 1.6vw, 20px)); }
+.cls-pg { position: absolute; right: 0; top: 50%; transform: translateY(-50%); font-weight: 400; letter-spacing: 0.06em; color: var(--soft); }
+.cls-pg::before { content: none; }
+@media (max-width: 640px) { .cls { font-size: 11px; letter-spacing: 0.1em; gap: 8px; } .cls-bot { flex-direction: column; gap: 4px; } .cls-bot::before, .cls-bot::after { display: none; } .cls-pg { position: static; transform: none; } }
+/* the reviewer's red pen */
+.redpen { position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; z-index: 4; overflow: visible; }
+.redpen path { fill: none; stroke: var(--pen); stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; opacity: 0.88; }
+.pen-note { position: absolute; z-index: 4; margin: 0; pointer-events: none; font: 600 21px/1.02 var(--font-hand); color: var(--pen); transform: rotate(-3deg); transform-origin: left center; opacity: 0.92; }
+.pen-note.sign { font-size: 25px; }
+.redpen.draw path { stroke-dasharray: var(--len); stroke-dashoffset: var(--len); animation: penstroke 0.7s ease-out forwards; }
+.pen-note.draw { animation: peninkk 0.5s ease-out both; }
+@keyframes penstroke { to { stroke-dashoffset: 0; } }
+@keyframes peninkk { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .redpen.draw path, .pen-note.draw { animation: none; stroke-dashoffset: 0; } }
+@media print { .redpen, .pen-note { display: none; } }
+
 .cbtn.cap-pick[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
 .cap-shots { display: grid; gap: 22px; }
 .cap-shots .shot img { background: #fff; }
 </style>
 
+<div class="desk-light" aria-hidden="true"></div>
+<svg class="desk-prop desk-pencil" viewBox="0 0 40 380" aria-hidden="true"><path d="M8 40h24v300H8z" fill="#e6b422"/><path d="M8 40h8v300H8z" fill="#f2c94c"/><path d="M24 40h8v300h-8z" fill="#c9971a"/><path d="M8 340h24l-12 36z" fill="#e9cfa3"/><path d="M16 364h8l-4 12z" fill="#2b2b2b"/><path d="M6 14h28v26H6z" fill="#b7b9bc"/><path d="M6 20h28M6 27h28M6 34h28" stroke="#8d9096" stroke-width="1.5"/><path d="M8 0h24v14H8z" fill="#d97a86" rx="3"/></svg>
+<svg class="desk-prop desk-clip" viewBox="0 0 22 64" aria-hidden="true"><path d="M6 20V8a5 5 0 0 1 10 0v44a8 8 0 0 1-16 0V14" fill="none" stroke="#b9bcc2" stroke-width="2.6" stroke-linecap="round"/></svg>
 <div class="wrap">
   <header class="top">
     <div class="who">Christopher Accad <span>· case files · Ottawa</span></div>
@@ -442,6 +480,7 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
   </nav>
 
   <main class="folder">
+    <div class="cls cls-top" aria-label="Classification: unclassified">Unclassified / Non classifié</div>
 
     <!-- 01 overview -->
     <section class="file" id="file-overview" data-file="overview" aria-labelledby="t-overview">
@@ -617,10 +656,6 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
           <figure class="sketchpad penpad" id="pen-pad">
             <canvas id="pen" tabindex="0" role="img" aria-label="Pencil sketch of a double inverted pendulum balanced on a cart. Drag the arms or cart to disturb it, click the rail to move the cart, arrow keys tap the tip. The controller pushes the cart to bring it back upright."></canvas>
             <p class="pen-status" id="pen-status" aria-live="polite">steady</p>
-            <div class="pen-done" id="pen-fallen" hidden>
-              <p>It fell over.</p>
-              <button class="btn primary" id="pen-reset2" type="button">Stand it back up</button>
-            </div>
             <div class="tvp-controls pen-ctl">
             <button class="cbtn" id="pen-tapl" type="button">← Tap the tip</button>
             <button class="cbtn" id="pen-tapr" type="button">Tap the tip →</button>
@@ -648,7 +683,7 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
               </dl>
               <p class="ps-gains">u = −K(x − x<sub>ref</sub>), |u| ≤ 80 N<br>K = [28.3, −344, 527, 34.7, −5.2, 54.5]</p>
             </aside>
-            <figcaption>Fig. 4 · Simulated like the real build: only the cart pushes. Point masses of 0.4 and 0.25 kg on arms of 0.20 and 0.16 m, a 0.6 kg cart, gravity, friction and rubber end stops, integrated with RK4 at 1 kHz. A linear-quadratic regulator (LQR) is the classical stand-in for the Isaac Lab model.</figcaption>
+            <figcaption>Fig. 4 · Simulated like the real build: only the cart pushes. Point masses of 0.4 and 0.25 kg on arms of 0.20 and 0.16 m, a 0.6 kg cart, gravity, friction and rubber end stops, integrated with RK4 at 1 kHz. A linear-quadratic regulator (LQR) is the classical stand-in for the Isaac Lab model. After a fall, the swing-up is a trajectory optimised offline (1.7 s, under 18 N, 24 cm of rail), tracked with time-varying LQR gains.</figcaption>
           </figure>
           <div class="pen-grid">
             <div class="pin tilt-r pen-try">
@@ -657,7 +692,7 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
                 <li><b>Drag the tip</b> sideways a little and let go. The cart darts under it and the arms settle.</li>
                 <li><b>Click the rail</b> to move the cart. Watch it first lean the wrong way to get going, a classic quirk of balancing.</li>
                 <li><b>Tap the tip</b> or send a gust and read the force trace.</li>
-                <li><b>Pull hard</b>, or switch the controller off, and it falls. Past about 50° nothing can save it.</li>
+                <li><b>Pull hard</b>, or switch the controller off, and it falls. Past about 50° the balance controller can’t save it, so a second controller takes over: it lets the arms settle, then pumps the cart to swing both arms back up and hands over at the top.</li>
               </ul>
             </div>
           </div>
@@ -990,6 +1025,7 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
       </aside>
       <nav class="filenav" aria-label="File navigation"><a href="#senate">← Senate</a><a href="#overview">Back to Overview ↺</a></nav>
     </section>
+    <div class="cls cls-bot"><span>Unclassified / Non classifié</span><span class="cls-pg">Page <b id="cls-n">1</b> of 10</span></div>
   </main>
   <footer class="foot"><span>Christopher Accad · Ottawa · Nov 2026</span><span>Press 1 to 0 to open a file</span></footer>
 </div>
@@ -1922,8 +1958,13 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
   /* ---------- plant ---------- */
   var MC = 0.6, M1 = 0.4, M2 = 0.25, L1 = 0.2, L2 = 0.16, GR = 9.81, BX = 0.15, BJ = 0.002, XLIM = 0.5, FMAX = 80;
   var K = [28.3, -344.3, 526.9, 34.7, -5.2, 54.5];                // LQR gains, Q = diag(40, 250, 250, 4, 3, 3), R = 0.05
+  /* recovery after a fall: an LQR about the hanging position damps the swinging and centres the cart, then a
+     swing-up found offline by trajectory optimisation (CasADi + IPOPT, |x| <= 0.36 m, |u| <= 55 N) is tracked with
+     time-varying LQR gains, and the upright LQR catches it at the top */
+  var KDN = [7.746, 10.326, -3.862, 5.816, 0.808, 0.353];
+  var SW = {"T":1.68576,"X":[[0.0,3.14159,3.14159,0.0,0.0,0.0],[-0.00014,3.14088,3.14159,-0.02718,-0.13541,-0.00084],[-0.00059,3.13867,3.14157,-0.05702,-0.28229,-0.00439],[-0.00136,3.13485,3.14148,-0.08997,-0.44158,-0.01235],[-0.0025,3.12929,3.14128,-0.12615,-0.61247,-0.02649],[-0.00404,3.12188,3.1409,-0.1655,-0.79306,-0.04871],[-0.00601,3.11252,3.14022,-0.20775,-0.9804,-0.08093],[-0.00843,3.10118,3.13915,-0.25241,-1.17047,-0.12514],[-0.01134,3.08784,3.13754,-0.29881,-1.35818,-0.18326],[-0.01474,3.07256,3.13523,-0.34606,-1.53748,-0.25705],[-0.01863,3.05548,3.13206,-0.39307,-1.70154,-0.34795],[-0.02302,3.03678,3.12784,-0.43861,-1.84304,-0.45687],[-0.02786,3.01675,3.12237,-0.48137,-1.95459,-0.58394],[-0.03314,2.99573,3.11547,-0.51998,-2.0292,-0.72828],[-0.0388,2.97416,3.10697,-0.55316,-2.06081,-0.88787],[-0.04477,2.95251,3.09672,-0.57973,-2.04469,-1.05948],[-0.05098,2.9313,3.08462,-0.59874,-1.97772,-1.23885],[-0.05734,2.91107,3.07061,-0.60941,-1.8585,-1.42097],[-0.06378,2.89238,3.05469,-0.61124,-1.68721,-1.60039],[-0.07018,2.87576,3.03692,-0.6039,-1.4653,-1.77172],[-0.07645,2.86174,3.01741,-0.58722,-1.19512,-1.92994],[-0.0825,2.85081,2.99632,-0.56111,-0.87947,-2.0706],[-0.08823,2.84343,2.97386,-0.52552,-0.52122,-2.18997],[-0.09353,2.84004,2.95027,-0.48034,-0.12295,-2.28495],[-0.0983,2.84105,2.92581,-0.42541,0.31321,-2.35279],[-0.10244,2.84686,2.9008,-0.36042,0.7857,-2.39078],[-0.10584,2.85782,2.87555,-0.28496,1.29343,-2.39569],[-0.10838,2.87433,2.85045,-0.19854,1.83546,-2.36303],[-0.10996,2.89672,2.82591,-0.10062,2.41039,-2.2862],[-0.11044,2.92533,2.80246,0.00918,3.01535,-2.15541],[-0.1097,2.96046,2.78072,0.13089,3.64454,-1.95667],[-0.10762,3.0023,2.76152,0.26385,4.28747,-1.67127],[-0.10408,3.05091,2.74589,0.40636,4.92722,-1.27639],[-0.09901,3.10614,2.73509,0.55535,5.53962,-0.74793],[-0.09235,3.16754,2.73066,0.70633,6.09423,-0.06586],[-0.08412,3.23431,2.73428,0.85376,6.55763,0.77879],[-0.07439,3.30534,2.74762,0.99184,6.89844,1.77795],[-0.06327,3.37918,2.7722,1.11541,7.09233,2.90453],[-0.05095,3.45421,2.80912,1.22088,7.12541,4.11582],[-0.03762,3.52871,2.85903,1.30651,6.99507,5.36114],[-0.0235,3.60101,2.92201,1.37235,6.70872,6.59054],[-0.00879,3.66953,2.99767,1.41963,6.28141,7.76159],[0.00634,3.73289,3.08521,1.45018,5.73335,8.84272],[0.02171,3.78994,3.18357,1.46587,5.08808,9.81314],[0.03717,3.8398,3.29151,1.46822,4.37147,10.66015],[0.05259,3.88186,3.4077,1.45835,3.61156,11.37507],[0.06784,3.91582,3.53068,1.43705,2.83881,11.94908],[0.08282,3.94172,3.65892,1.40511,2.08594,12.37029],[0.09741,3.95994,3.79074,1.36366,1.38632,12.62412],[0.11152,3.97119,3.92429,1.31453,0.76964,12.69832],[0.12508,3.97648,4.05767,1.26016,0.25527,12.59169],[0.13805,3.97691,4.18905,1.20312,-0.15387,12.32161],[0.15042,3.97351,4.31688,1.14535,-0.47249,11.92425],[0.16217,3.96712,4.44007,1.08758,-0.72785,11.44635],[0.17332,3.95822,4.558,1.02937,-0.9514,10.93388],[0.18384,3.94701,4.67053,0.96935,-1.17182,10.42389],[0.19371,3.93339,4.77782,0.90571,-1.41165,9.94163],[0.20289,3.91706,4.88024,0.83648,-1.68702,9.50135],[0.21129,3.89759,4.97828,0.75973,-2.00904,9.10859],[0.21884,3.87445,5.07243,0.67356,-2.38583,8.76231],[0.22543,3.84701,5.16315,0.57605,-2.82439,8.45622],[0.23091,3.81459,5.25081,0.46523,-3.33249,8.17928],[0.23515,3.77641,5.33564,0.33889,-3.92056,7.91508],[0.23796,3.73154,5.41766,0.19448,-4.60374,7.64023],[0.23915,3.67887,5.49658,0.02893,-5.40451,7.3213],[0.23845,3.617,5.57171,-0.16155,-6.35573,6.90984],[0.2356,3.54411,5.64172,-0.38143,-7.50353,6.33556],[0.23026,3.45782,5.70439,-0.63516,-8.90607,5.4996],[0.22205,3.35516,5.75633,-0.92414,-10.61543,4.279],[0.21065,3.23288,5.7929,-1.23783,-12.61118,2.5771],[0.19597,3.08901,5.80921,-1.53733,-14.65608,0.47859],[0.17854,2.92572,5.80319,-1.75031,-16.20622,-1.55516],[0.15963,2.75126,5.77908,-1.81862,-16.74658,-2.86186],[0.14074,2.57658,5.74651,-1.75695,-16.30503,-3.16413],[0.12291,2.40988,5.71514,-1.62565,-15.30479,-2.68793],[0.1066,2.25488,5.69126,-1.47464,-14.12327,-1.79199],[0.09186,2.11231,5.6778,-1.32937,-12.96129,-0.74322],[0.07857,1.98146,5.67546,-1.19921,-11.89939,0.30152],[0.06656,1.86116,5.68372,-1.08575,-10.9603,1.25937],[0.05566,1.75009,5.70144,-0.98741,-10.14251,2.09126],[0.04573,1.64704,5.72719,-0.90155,-9.43517,2.78365],[0.03665,1.55092,5.75951,-0.82542,-8.82428,3.33764],[0.02833,1.4608,5.79699,-0.75662,-8.29532,3.76225],[0.0207,1.37587,5.83831,-0.69322,-7.83445,4.07015],[0.01371,1.2955,5.88233,-0.63379,-7.42898,4.27494],[0.00734,1.21916,5.92803,-0.57734,-7.06756,4.38959],[0.00155,1.14644,5.97451,-0.52325,-6.74022,4.42576],[-0.00369,1.07703,6.02102,-0.47123,-6.43831,4.3935],[-0.00839,1.0107,6.06686,-0.4212,-6.15443,4.30149],[-0.01257,0.9473,6.11145,-0.37326,-5.88235,4.15726],[-0.01626,0.88672,6.15429,-0.32763,-5.61705,3.96768],[-0.01948,0.82892,6.19492,-0.28459,-5.35465,3.73936],[-0.02226,0.77388,6.23297,-0.24442,-5.09251,3.47899],[-0.02464,0.72162,6.26814,-0.20739,-4.82921,3.19356],[-0.02664,0.67213,6.3002,-0.17366,-4.56451,2.89046],[-0.02831,0.62544,6.32901,-0.14334,-4.29925,2.57732],[-0.02968,0.58154,6.3545,-0.1164,-4.0351,2.26171],[-0.03078,0.54041,6.37669,-0.0927,-3.77427,1.95076],[-0.03164,0.502,6.39565,-0.07204,-3.51921,1.65078],[-0.03231,0.46623,6.41154,-0.05414,-3.2723,1.36692],[-0.0328,0.43302,6.42453,-0.03869,-3.0356,1.103],[-0.03314,0.40224,6.43486,-0.02536,-2.81072,0.86153],[-0.03334,0.37377,6.44277,-0.01386,-2.59879,0.64376],[-0.03344,0.34745,6.44852,-0.00388,-2.40044,0.44992],[-0.03343,0.32315,6.45234,0.00482,-2.21588,0.27943],[-0.03334,0.30073,6.45448,0.01247,-2.04498,0.13111],[-0.03318,0.28003,6.45518,0.01926,-1.88738,0.00344],[-0.03294,0.26093,6.45462,0.02535,-1.74251,-0.10536],[-0.03265,0.24329,6.45302,0.03088,-1.60971,-0.19712],[-0.0323,0.22698,6.45052,0.03596,-1.48827,-0.27368],[-0.03189,0.2119,6.4473,0.04069,-1.37743,-0.33681],[-0.03144,0.19794,6.44347,0.04513,-1.27644,-0.38816],[-0.03095,0.18499,6.43915,0.04935,-1.18459,-0.42926],[-0.03041,0.17296,6.43445,0.0534,-1.10118,-0.46152],[-0.02982,0.16177,6.42946,0.05732,-1.02554,-0.48617],[-0.0292,0.15133,6.42423,0.06114,-0.95705,-0.50433],[-0.02854,0.14158,6.41885,0.06487,-0.89514,-0.51697],[-0.02784,0.13246,6.41336,0.06852,-0.83926,-0.52497],[-0.0271,0.12389,6.4078,0.07212,-0.78891,-0.52906],[-0.02632,0.11582,6.40222,0.07565,-0.7436,-0.5299],[-0.0255,0.10821,6.39664,0.07912,-0.70291,-0.52803],[-0.02465,0.101,6.3911,0.08251,-0.66641,-0.52394],[-0.02377,0.09416,6.38561,0.08582,-0.63372,-0.51801],[-0.02285,0.08765,6.38019,0.08903,-0.60447,-0.51059],[-0.02189,0.08142,6.37485,0.09211,-0.57831,-0.50195],[-0.02091,0.07546,6.36962,0.09504,-0.5549,-0.49231],[-0.01989,0.06973,6.36448,0.09781,-0.53393,-0.48186],[-0.01885,0.06421,6.35946,0.10037,-0.51507,-0.47074],[-0.01778,0.05887,6.35457,0.10269,-0.49804,-0.45905],[-0.01669,0.05371,6.34979,0.10474,-0.48252,-0.44687],[-0.01557,0.04871,6.34515,0.10648,-0.46822,-0.43425],[-0.01445,0.04385,6.34064,0.10787,-0.45485,-0.42123],[-0.0133,0.03913,6.33628,0.10886,-0.4421,-0.40782],[-0.01216,0.03454,6.33205,0.10941,-0.42967,-0.39401],[-0.011,0.03009,6.32797,0.10947,-0.41728,-0.37981],[-0.00985,0.02576,6.32405,0.10899,-0.4046,-0.36519],[-0.00871,0.02157,6.32028,0.10793,-0.39133,-0.35012],[-0.00758,0.01753,6.31667,0.10623,-0.37717,-0.33459],[-0.00648,0.01364,6.31323,0.10385,-0.3618,-0.31858],[-0.0054,0.00992,6.30996,0.10074,-0.34492,-0.30206],[-0.00436,0.00639,6.30687,0.09685,-0.32623,-0.28504],[-0.00336,0.00306,6.30396,0.09216,-0.30544,-0.26751],[-0.00242,-3e-05,6.30123,0.08664,-0.28231,-0.2495],[-0.00154,-0.00287,6.2987,0.08026,-0.25661,-0.23104],[-0.00073,-0.00542,6.29637,0.07302,-0.22815,-0.21219],[-1e-05,-0.00765,6.29423,0.06493,-0.19683,-0.19304],[0.00063,-0.00955,6.2923,0.05604,-0.16262,-0.17369],[0.00117,-0.01106,6.29057,0.0464,-0.12562,-0.15429],[0.0016,-0.01218,6.28905,0.03611,-0.08607,-0.13502],[0.00193,-0.01286,6.28773,0.02531,-0.04442,-0.11607],[0.00213,-0.0131,6.2866,0.01421,-0.00135,-0.09767],[0.00223,-0.01289,6.28566,0.00306,0.04213,-0.0801],[0.0022,-0.01222,6.28491,-0.00778,0.08463,-0.06362],[0.00207,-0.01112,6.28432,-0.01789,0.12426,-0.04854],[0.00183,-0.00963,6.28388,-0.0267,0.15853,-0.03515],[0.00151,-0.00783,6.28357,-0.0335,0.1842,-0.02372],[0.00114,-0.00582,6.28337,-0.03743,0.19714,-0.01448],[0.00075,-0.00378,6.28326,-0.03741,0.1921,-0.00756],[0.00038,-0.00191,6.2832,-0.03212,0.16251,-0.003],[0.00011,-0.00053,6.28319,-0.02003,0.10049,-0.00062],[0.0,0.0,6.28319,-0.0,0.0,0.0]],"U":[-1.553,-1.72,-1.925,-2.148,-2.379,-2.609,-2.827,-3.022,-3.182,-3.296,-3.354,-3.346,-3.266,-3.112,-2.882,-2.58,-2.212,-1.787,-1.314,-0.801,-0.257,0.312,0.904,1.518,2.156,2.82,3.514,4.241,5.001,5.789,6.591,7.381,8.122,8.768,9.27,9.587,9.696,9.596,9.308,8.867,8.318,7.705,7.065,6.429,5.817,5.238,4.692,4.169,3.649,3.112,2.536,1.911,1.232,0.505,-0.264,-1.066,-1.897,-2.754,-3.639,-4.556,-5.512,-6.515,-7.577,-8.711,-9.934,-11.265,-12.716,-14.273,-15.838,-17.127,-17.633,-16.883,-14.938,-12.367,-9.735,-7.347,-5.302,-3.6,-2.202,-1.061,-0.132,0.626,1.246,1.753,2.17,2.512,2.791,3.016,3.193,3.327,3.421,3.477,3.498,3.485,3.441,3.37,3.275,3.161,3.032,2.894,2.749,2.603,2.457,2.316,2.179,2.05,1.927,1.812,1.705,1.606,1.514,1.428,1.349,1.275,1.206,1.142,1.082,1.025,0.972,0.92,0.87,0.822,0.775,0.729,0.683,0.636,0.59,0.542,0.494,0.444,0.393,0.34,0.286,0.229,0.171,0.11,0.048,-0.017,-0.083,-0.151,-0.219,-0.288,-0.357,-0.425,-0.49,-0.551,-0.606,-0.653,-0.69,-0.713,-0.718,-0.7,-0.655,-0.574,-0.452,-0.277,-0.039,0.274,0.675,1.137],"K":[[25.12,82.47,-6.52,24.45,1.8,3.66],[25.0,82.27,-7.29,24.21,1.84,3.57],[24.87,82.24,-8.29,23.94,1.89,3.5],[24.73,82.36,-9.43,23.64,1.96,3.45],[24.6,82.62,-10.65,23.33,2.02,3.44],[24.48,82.93,-11.84,23.01,2.08,3.46],[24.39,83.21,-12.87,22.69,2.14,3.52],[24.31,83.33,-13.61,22.38,2.2,3.61],[24.25,83.17,-13.94,22.05,2.25,3.72],[24.17,82.58,-13.74,21.71,2.29,3.84],[24.07,81.46,-12.96,21.33,2.32,3.96],[23.92,79.75,-11.58,20.9,2.35,4.06],[23.69,77.49,-9.66,20.42,2.38,4.14],[23.39,74.8,-7.34,19.88,2.41,4.18],[23.01,71.88,-4.8,19.29,2.45,4.19],[22.58,68.95,-2.24,18.68,2.51,4.16],[22.13,66.23,0.18,18.06,2.58,4.11],[21.68,63.89,2.31,17.46,2.66,4.05],[21.25,62.03,4.05,16.88,2.76,3.98],[20.86,60.69,5.34,16.35,2.87,3.9],[20.51,59.85,6.15,15.86,3.0,3.81],[20.21,59.46,6.44,15.41,3.14,3.71],[19.96,59.45,6.2,15.02,3.3,3.59],[19.77,59.74,5.45,14.71,3.45,3.45],[19.67,60.22,4.24,14.5,3.58,3.29],[19.69,60.78,2.65,14.43,3.69,3.1],[19.89,61.29,0.81,14.56,3.74,2.9],[20.3,61.64,-1.12,14.92,3.73,2.68],[20.99,61.75,-2.97,15.56,3.63,2.45],[21.96,61.56,-4.56,16.48,3.44,2.23],[23.18,61.09,-5.76,17.64,3.17,2.03],[24.51,60.42,-6.49,18.89,2.85,1.87],[25.72,59.62,-6.7,20.02,2.52,1.79],[26.44,58.63,-6.33,20.72,2.26,1.82],[26.3,57.21,-5.31,20.64,2.12,2.01],[24.96,54.93,-3.56,19.52,2.15,2.36],[22.34,51.46,-1.07,17.29,2.36,2.87],[18.6,46.78,2.03,14.12,2.7,3.49],[14.15,41.35,5.36,10.38,3.14,4.17],[9.49,35.95,8.37,6.52,3.59,4.88],[5.07,31.49,10.51,2.94,4.0,5.6],[1.26,28.78,11.34,-0.05,4.34,6.31],[-1.7,28.43,10.77,-2.24,4.62,7.04],[-3.67,30.74,9.22,-3.52,4.88,7.79],[-4.6,35.67,7.72,-3.89,5.24,8.63],[-4.55,42.91,7.89,-3.4,5.85,9.67],[-3.62,51.93,11.75,-2.19,6.92,11.07],[-1.91,62.33,21.45,-0.36,8.68,13.03],[0.52,74.06,39.01,2.04,11.38,15.85],[3.74,87.8,66.24,5.07,15.32,19.85],[8.0,105.2,104.78,8.95,20.83,25.49],[13.76,129.01,156.34,14.06,28.33,33.24],[21.65,162.45,222.23,20.92,38.18,43.54],[32.12,206.83,300.03,29.78,50.12,56.08],[44.15,254.38,373.18,39.55,61.62,67.96],[52.73,277.24,396.6,45.7,65.61,71.18],[49.88,239.27,319.78,41.59,54.2,56.97],[35.02,149.62,165.49,27.49,31.15,29.73],[16.85,58.8,10.96,11.26,8.87,3.34],[1.58,-4.06,-107.12,-1.99,-6.63,-15.68],[-9.99,-37.53,-194.83,-11.89,-15.99,-28.33],[-19.07,-46.94,-268.62,-19.67,-21.25,-37.21],[-27.0,-34.79,-343.43,-26.61,-23.88,-44.37],[-34.91,1.35,-432.61,-33.76,-24.6,-51.15],[-43.73,69.42,-549.18,-42.03,-23.46,-58.37],[-53.87,181.34,-700.69,-51.86,-19.8,-65.8],[-62.79,334.6,-855.3,-60.93,-12.22,-69.93],[-58.83,436.99,-846.6,-58.15,-0.75,-59.7],[-29.13,292.52,-462.75,-30.71,7.19,-28.13],[2.92,4.67,5.77,0.04,6.0,0.3],[11.95,-137.78,200.07,10.1,3.53,9.5],[4.65,-117.28,187.66,5.32,4.56,8.13],[-3.54,-39.18,127.16,-0.64,7.65,5.0],[-4.88,38.97,81.76,-1.04,11.14,2.9],[-0.34,108.05,50.17,3.27,15.0,1.47],[6.93,166.29,25.84,9.64,19.6,0.04],[14.69,211.33,6.94,16.17,24.93,-1.71],[21.57,241.27,-7.03,21.73,30.54,-3.79],[26.69,255.26,-16.8,25.6,35.71,-6.1],[29.48,254.23,-23.51,27.36,39.72,-8.42],[29.83,241.47,-28.46,26.98,42.16,-10.58],[28.12,222.04,-32.85,24.89,43.12,-12.5],[25.07,201.08,-37.55,21.76,43.04,-14.19],[21.39,182.42,-43.23,18.21,42.5,-15.77],[17.62,168.22,-50.45,14.67,41.95,-17.39],[14.04,159.31,-59.94,11.34,41.65,-19.19],[10.73,155.87,-72.64,8.23,41.73,-21.33],[7.59,157.93,-89.88,5.2,42.19,-23.99],[4.41,165.74,-113.48,2.02,43.01,-27.38],[0.89,179.99,-145.97,-1.65,44.16,-31.77],[-3.44,202.0,-190.92,-6.28,45.59,-37.57],[-9.2,233.76,-253.28,-12.5,47.24,-45.32],[-17.28,277.7,-339.55,-21.23,48.88,-55.69],[-28.82,335.01,-456.07,-33.59,49.94,-69.22],[-44.69,399.35,-600.04,-50.34,48.83,-85.16],[-62.96,440.26,-730.62,-69.05,42.2,-98.05],[-73.86,390.97,-733.21,-79.07,26.64,-94.13],[-64.7,220.04,-516.64,-67.39,6.39,-64.39],[-40.83,21.26,-203.11,-40.78,-7.67,-25.49],[-17.94,-115.98,42.1,-16.11,-12.83,3.36],[-1.95,-189.91,189.98,0.78,-13.06,20.0],[8.22,-226.04,272.06,11.36,-11.58,28.82],[14.65,-242.9,317.19,17.97,-9.78,33.44],[18.83,-250.35,342.43,22.23,-8.14,35.88],[21.65,-253.24,356.9,25.09,-6.76,37.19],[23.63,-253.96,365.42,27.1,-5.64,37.9],[25.08,-253.68,370.63,28.58,-4.74,38.3],[26.17,-253.0,373.96,29.72,-4.02,38.53],[27.04,-252.21,376.22,30.63,-3.44,38.68],[27.75,-251.47,377.9,31.4,-2.97,38.78],[28.35,-250.83,379.25,32.06,-2.59,38.87],[28.87,-250.33,380.44,32.65,-2.28,38.95],[29.33,-249.95,381.56,33.19,-2.02,39.04],[29.75,-249.7,382.65,33.69,-1.8,39.13],[30.14,-249.55,383.74,34.17,-1.61,39.22],[30.51,-249.5,384.84,34.62,-1.45,39.32],[30.85,-249.52,385.95,35.05,-1.31,39.43],[31.17,-249.6,387.06,35.46,-1.19,39.53],[31.47,-249.74,388.17,35.86,-1.08,39.64],[31.76,-249.91,389.26,36.23,-0.99,39.75],[32.02,-250.11,390.34,36.58,-0.9,39.86],[32.26,-250.33,391.38,36.91,-0.83,39.97],[32.47,-250.57,392.39,37.21,-0.76,40.07],[32.66,-250.83,393.36,37.49,-0.7,40.17],[32.81,-251.1,394.29,37.73,-0.65,40.27],[32.94,-251.39,395.19,37.94,-0.61,40.36],[33.03,-251.69,396.05,38.11,-0.58,40.44],[33.08,-252.02,396.9,38.24,-0.56,40.52],[33.09,-252.39,397.74,38.33,-0.55,40.6],[33.06,-252.8,398.61,38.38,-0.54,40.68],[33.0,-253.27,399.52,38.38,-0.55,40.76],[32.89,-253.81,400.52,38.35,-0.56,40.84],[32.74,-254.44,401.64,38.28,-0.58,40.94],[32.57,-255.18,402.94,38.18,-0.61,41.05],[32.36,-256.05,404.47,38.05,-0.65,41.17],[32.12,-257.06,406.29,37.9,-0.69,41.33],[31.87,-258.25,408.45,37.74,-0.74,41.51],[31.6,-259.62,411.03,37.57,-0.79,41.73],[31.34,-261.2,414.09,37.4,-0.84,42.0],[31.08,-263.0,417.68,37.25,-0.89,42.31],[30.83,-265.02,421.86,37.13,-0.94,42.69],[30.61,-267.26,426.64,37.04,-0.98,43.12],[30.42,-269.71,432.05,36.98,-1.02,43.62],[30.26,-272.33,438.04,36.97,-1.05,44.17],[30.14,-275.1,444.53,37.0,-1.08,44.77],[30.04,-277.94,451.38,37.04,-1.1,45.42],[29.96,-280.78,458.38,37.1,-1.11,46.08],[29.87,-283.53,465.23,37.13,-1.13,46.72],[29.74,-286.13,471.59,37.08,-1.17,47.33],[29.54,-288.56,477.09,36.91,-1.22,47.85],[29.22,-290.89,481.46,36.57,-1.31,48.26],[28.77,-293.42,484.69,36.01,-1.45,48.56],[28.19,-296.75,487.3,35.25,-1.64,48.8],[27.54,-301.94,490.65,34.35,-1.88,49.11],[26.97,-310.48,497.06,33.49,-2.16,49.74],[26.68,-324.1,509.62,32.93,-2.42,50.99],[26.87,-343.62,530.21,32.91,-2.63,53.04],[27.39,-365.42,553.68,33.26,-2.77,55.38],[27.0,-374.73,556.13,32.63,-3.08,55.56],[24.08,-357.77,512.11,29.33,-4.63,50.95]]};
   var s = [0, 0, 0, 0, 0, 0];                                       // x, a1, a2, x', a1', a2'  (angles from straight up)
-  var S = { active: false, inView: true, ready: false, raf: 0, last: 0, ctrl: true, fallen: false, xref: 0, F: 0,
+  var S = { active: false, inView: true, ready: false, raf: 0, last: 0, ctrl: true, fallen: false, mode: 'balance', swT: 0, off1: 0, off2: 0, xref: 0, F: 0,
             ext: [0, 0, 0], grab: null, ptr: null, pulse: null, gust: 0, hist: [], trail: [], statT: 0 };
   var G = {}, colors = {}, J = [];
   for (var j = 0; j < 40; j++) J.push((Math.random() - 0.5) * 1.6);
@@ -1962,10 +2003,26 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
     var qdd = solve3(massMatrix(a1, a2), Q);
     return [xd, w1, w2, qdd[0], qdd[1], qdd[2]];
   }
+  function wrapA(a) { return a - 2 * Math.PI * Math.floor((a + Math.PI) / (2 * Math.PI)); }
   function control(st) {
-    if (!S.ctrl || S.fallen) return 0;
-    var e = [st[0] - S.xref, st[1], st[2], st[3], st[4], st[5]], u = 0;
-    for (var i = 0; i < 6; i++) u -= K[i] * e[i];
+    if (!S.ctrl) return 0;
+    var e, u = 0, i;
+    if (S.mode === 'settle') {
+      e = [st[0], wrapA(st[1] - Math.PI), wrapA(st[2] - Math.PI), st[3], st[4], st[5]];
+      for (i = 0; i < 6; i++) u -= KDN[i] * e[i];
+      if (Math.abs(e[0]) < 0.02 && Math.abs(e[1]) < 0.03 && Math.abs(e[2]) < 0.03 && Math.abs(e[3]) < 0.05 && Math.abs(e[4]) < 0.2 && Math.abs(e[5]) < 0.2 && S.grab === null) {
+        S.mode = 'swing'; S.swT = 0; S.off1 = st[1] - Math.PI - e[1]; S.off2 = st[2] - Math.PI - e[2];
+      }
+    } else if (S.mode === 'swing') {
+      var N = SW.U.length, dtk = SW.T / N, f = S.swT / dtk, k = Math.min(N - 1, Math.floor(f)), w = Math.min(1, f - k), A = SW.X[k], B = SW.X[k + 1], ref;
+      e = []; for (i = 0; i < 6; i++) { ref = A[i] + (B[i] - A[i]) * w; e.push(st[i] - ref - (i === 1 ? S.off1 : i === 2 ? S.off2 : 0)); }
+      u = SW.U[k]; for (i = 0; i < 6; i++) u -= SW.K[k][i] * e[i];
+      if (Math.abs(e[1]) > 0.7 || Math.abs(e[2]) > 0.7) S.mode = 'settle';          // knocked off the path: settle and try again
+      else if (S.swT >= SW.T) caught();
+    } else {
+      e = [st[0] - S.xref, wrapA(st[1]), wrapA(st[2]), st[3], st[4], st[5]];
+      for (i = 0; i < 6; i++) u -= K[i] * e[i];
+    }
     return Math.max(-FMAX, Math.min(FMAX, u));
   }
   function externalForces(st) {
@@ -1994,7 +2051,8 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
     for (i = 0; i < 6; i++) s[i] += h / 6 * (k1[i] + 2 * k2[i] + 2 * k3[i] + k4[i]);
     if (S.pulse) { S.pulse.t -= h; if (S.pulse.t <= 0) S.pulse = null; }
     if (S.gust > 0) { S.gust -= h; S.gustT -= h; if (S.gustT <= 0) { S.gustF = (Math.random() - 0.4) * 0.32; S.gustT = 0.08 + Math.random() * 0.1; } }
-    if (!S.fallen && (Math.abs(s[1]) > 0.9 || Math.abs(s[2]) > 0.9)) fall();
+    if (S.mode === 'swing') S.swT += h;
+    if (!S.fallen && (Math.abs(wrapA(s[1])) > 0.9 || Math.abs(wrapA(s[2])) > 0.9)) fall();
   }
   function pointOf(k, st) {
     var x = st[0], ex = x + L1 * Math.sin(st[1]), ey = L1 * Math.cos(st[1]);
@@ -2011,14 +2069,16 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
 
   /* ---------- states ---------- */
   function fall() {
-    S.fallen = true; layout();
-    S.fallen = true; el('pen-fallen').hidden = false;
-    setStatus('fallen: past the controller’s reach');
+    S.fallen = true; S.mode = 'settle'; S.xref = 0; layout();
+  }
+  function caught() {
+    s[1] = wrapA(s[1]); s[2] = wrapA(s[2]);
+    S.mode = 'balance'; S.fallen = false; layout();
   }
   function reset() {
     s = [0, (Math.random() - 0.5) * 0.01, (Math.random() - 0.5) * 0.01, 0, 0, 0];
-    S.fallen = false; S.xref = 0; S.grab = null; S.pulse = null; S.gust = 0; S.trail = []; S.hist = [];
-    el('pen-fallen').hidden = true; layout(); setCtrl(true); kick();
+    S.fallen = false; S.mode = 'balance'; S.xref = 0; S.grab = null; S.pulse = null; S.gust = 0; S.trail = []; S.hist = [];
+    layout(); setCtrl(true); kick();
   }
   var lastStatus = '';
   function setStatus(t) { if (t !== lastStatus) { lastStatus = t; el('pen-status').textContent = t; } }
@@ -2117,8 +2177,9 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
     el('st-fbar').style.width = (Math.abs(S.F) / FMAX * 50) + '%';
     el('st-fbar').style.left = S.F >= 0 ? '50%' : (50 - Math.abs(S.F) / FMAX * 50) + '%';
     var tilt = Math.max(Math.abs(s[1]), Math.abs(s[2])) * rad;
-    if (S.fallen) setStatus('fallen: past the controller’s reach');
-    else if (!S.ctrl) setStatus('controller off: falling');
+    if (!S.ctrl) setStatus(S.fallen ? 'controller off: hanging' : 'controller off: falling');
+    else if (S.mode === 'swing') setStatus('swinging back up');
+    else if (S.fallen) setStatus('fell over: letting it settle, then swinging up');
     else if (S.grab !== null) setStatus('you’re pushing it, the controller is pushing back');
     else if (tilt > 1.5 || Math.abs(s[0] - S.xref) > 0.02) setStatus('recovering');
     else setStatus('steady');
@@ -2181,7 +2242,6 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
   el('pen-gust').addEventListener('click', function () { if (!S.fallen) { S.gust = 1.4; S.gustT = 0; S.gustF = 0; } kick(); });
   el('pen-ctrl').addEventListener('click', function () { setCtrl(!S.ctrl); });
   el('pen-reset').addEventListener('click', reset);
-  el('pen-reset2').addEventListener('click', reset);
 
   var rt = 0;
   window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { if (S.ready && S.active) { layout(); kick(); } }, 150); });
@@ -2211,6 +2271,8 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
     [].forEach.call(document.querySelectorAll('.bpick'), function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-b') === build)); });
     if (window.tvpView) window.tvpView.setActive(on && build === 'tvp');
     if (window.penView) window.penView.setActive(on && build === 'pen');
+    var n = document.getElementById('cls-n'); if (n) n.textContent = String(TABS.indexOf(curTab) + 1);
+    if (window.redPen) window.redPen();
   }
   [].forEach.call(document.querySelectorAll('.bpick'), function (b) { b.addEventListener('click', function () { build = b.getAttribute('data-b'); applyBuild(); }); });
   var TABS = ['overview', 'models', 'builds', 'capstone', 'career', 'skills', 'work', 'cleanup', 'senate', 'contact'];
@@ -2311,5 +2373,94 @@ h1, h2.big { text-shadow: 0 0 0.6px currentColor; }
   });
 })();
 </script>
+<script>
+/* the reviewer's red pen: hand-drawn circles and notes over the open file */
+(function () {
+  var folder = document.querySelector('.folder'); if (!folder) return;
+  var NOTES = [
+    { file: 'overview', sel: '#file-overview .metrics > div:nth-child(1) b', kind: 'circle', text: 'checked ✓' },
+    { file: 'overview', sel: '#t-overview em', kind: 'under', text: 'noted.', place: 'below' },
+    { file: 'models', sel: '#file-models .mdl:not([hidden]) .metrics > div:nth-child(3) b', kind: 'circle', text: 'all of them?' },
+    { file: 'builds', sel: '#t-builds-pen', kind: 'under', text: 'knock it over. it gets back up.', place: 'below', last: true },
+    { file: 'builds', sel: '#t-builds', kind: 'under', text: 'drag the gimbal', place: 'below', last: true },
+    { file: 'capstone', sel: '#file-capstone .metrics > div:nth-child(1) b', kind: 'circle', text: 'with a factor of 2 ✓' },
+    { file: 'career', sel: '#file-career .now-role h3', kind: 'circle', text: 'current posting' },
+    { file: 'cleanup', sel: '#file-cleanup .metrics > div:nth-child(4) b', kind: 'circle', text: 'best number on the page' },
+    { file: 'senate', sel: '#file-senate .metrics > div:nth-child(4) b', kind: 'circle', text: 'offline. good.' },
+    { file: 'contact', sel: '#file-contact .exhibit', kind: 'sign', text: 'Recommend: interview.', sign: true }
+  ];
+  var seen = {}, svg = null, notes = [], raf = 0;
+  function rnd(seed) { var x = Math.sin(seed * 9301 + 49297) * 233280; return x - Math.floor(x); }
+  function circlePath(r, k) {
+    var cx = (r.l + r.r) / 2, cy = (r.t + r.b) / 2, rx = (r.r - r.l) / 2 + 12, ry = (r.b - r.t) / 2 + 8, d = '', n = 46, a0 = -2.2 + rnd(k) * 0.6, turn = 2 * Math.PI * 1.12;
+    for (var i = 0; i <= n; i++) {
+      var t = i / n, a = a0 + turn * t, w = 1 + 0.06 * Math.sin(t * 7 + k) + 0.05 * t;
+      d += (i ? 'L' : 'M') + (cx + Math.cos(a) * rx * w).toFixed(1) + ' ' + (cy + Math.sin(a) * ry * w + (t - 0.5) * 3).toFixed(1);
+    }
+    return d;
+  }
+  function underPath(r, k) {
+    var y = r.b + 3, x0 = r.l - 4, x1 = r.r + 6, d = 'M' + x0.toFixed(1) + ' ' + (y + 1).toFixed(1), n = 10;
+    for (var i = 1; i <= n; i++) { var t = i / n; d += 'L' + (x0 + (x1 - x0) * t).toFixed(1) + ' ' + (y + Math.sin(t * 5 + k) * 1.6 - t * 2).toFixed(1); }
+    d += 'M' + (x0 + 14).toFixed(1) + ' ' + (y + 6).toFixed(1) + 'L' + (x1 - 20).toFixed(1) + ' ' + (y + 4).toFixed(1);
+    return d;
+  }
+  function rectOf(el, fr, last) {
+    var rg = document.createRange(); rg.selectNodeContents(el);
+    var rs = [].filter.call(rg.getClientRects(), function (q) { return q.width > 1; }); if (!rs.length) rs = el.getClientRects(); if (!rs.length) return null;
+    var q = last ? rs[rs.length - 1] : rs[0];
+    if (!last) for (var i = 1; i < rs.length; i++) if (Math.abs(rs[i].top - q.top) < 4) q = { left: Math.min(q.left, rs[i].left), right: Math.max(q.right, rs[i].right), top: q.top, bottom: q.bottom };
+    return { l: q.left - fr.left, r: q.right - fr.left, t: q.top - fr.top, b: q.bottom - fr.top };
+  }
+  function draw() {
+    raf = 0;
+    if (svg) svg.remove(); notes.forEach(function (n) { n.remove(); }); notes = [];
+    var open = folder.querySelector('.file:not([hidden])'); if (!open) return;
+    var file = open.getAttribute('data-file'), fr = folder.getBoundingClientRect(), W = folder.clientWidth, narrow = W < 560;
+    var fresh = !seen[file]; seen[file] = true;
+    svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); svg.setAttribute('class', 'redpen' + (fresh ? ' draw' : '')); svg.setAttribute('aria-hidden', 'true');
+    NOTES.forEach(function (n, k) {
+      if (n.file !== file) return;
+      var el = folder.querySelector(n.sel); if (!el || !el.offsetParent) return;
+      var r = n.kind === 'sign' ? (function (q) { return { l: q.left - fr.left, r: q.right - fr.left, t: q.top - fr.top, b: q.bottom - fr.top }; })(el.getBoundingClientRect()) : rectOf(el, fr, n.last);
+      if (!r || r.r - r.l < 4) return;
+      if (n.kind === 'under' && n.last) {   // underline the last line, from its start to its end
+        r.l = Math.max(r.l, r.r - Math.min(r.r - r.l, narrow ? 220 : 420));
+      }
+      var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      if (n.kind !== 'sign') { path.setAttribute('d', n.kind === 'circle' ? circlePath(r, k) : underPath(r, k)); svg.appendChild(path); }
+      var p = document.createElement('p'); p.className = 'pen-note' + (n.sign ? ' sign' : '') + (fresh ? ' draw' : ''); p.setAttribute('aria-hidden', 'true'); p.textContent = n.text;
+      folder.appendChild(p);
+      var nw = p.offsetWidth, x, y;
+      var col = el; while (col.parentElement && !(col.parentElement.classList && col.parentElement.classList.contains('file'))) col = col.parentElement;
+      var colR = Math.min(W - 8, col.getBoundingClientRect().right - fr.left);
+      if (n.kind === 'sign') {          // a sign-off under the card, underlined with a flourish
+        x = Math.min(r.l + 24, W - nw - 10); y = r.b + 26;
+        path.setAttribute('d', underPath({ l: x + 4, r: x + nw - 10, t: y, b: y + p.offsetHeight - 2 }, k)); svg.appendChild(path);
+      }
+      else if (n.place === 'below' && r.r + 22 + nw <= colR) { x = r.r + 22; y = (r.t + r.b) / 2 - 8; }
+      else if (n.place === 'below') { x = Math.min(r.r - nw * 0.6, W - nw - 10); y = r.b + 8; }
+      else {
+        var box = (el.closest('.metrics > div') || el.parentElement).getBoundingClientRect(), edge = Math.min(W - 8, box.right - fr.left - 4);
+        x = r.r + 20; y = (r.t + r.b) / 2 - 14;
+        if (x + nw > edge) { x = Math.max(8, r.l + 4); y = r.t - 34; }
+      }
+      p.style.left = Math.max(6, x) + 'px'; p.style.top = y + 'px'; if (fresh) p.style.animationDelay = '0.45s';
+      notes.push(p);
+    });
+    folder.appendChild(svg);
+    [].forEach.call(svg.querySelectorAll('path'), function (pt) { try { pt.style.setProperty('--len', Math.ceil(pt.getTotalLength()) + 1); } catch (e) {} });
+  }
+  function later() { if (!raf) raf = requestAnimationFrame(function () { raf = requestAnimationFrame(draw); }); }
+  window.redPen = later;
+  if ('ResizeObserver' in window) new ResizeObserver(later).observe(folder);
+  window.addEventListener('resize', later);
+  document.addEventListener('toggle', later, true);
+  document.addEventListener('click', function () { setTimeout(later, 30); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(later);
+  later();
+})();
+</script>
+
 </body>
 </html>
